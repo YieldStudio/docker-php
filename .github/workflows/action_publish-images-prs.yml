@@ -23,7 +23,6 @@ jobs:
       # Use PR number from input if provided, otherwise use the PR event number
       tag-prefix: ${{ inputs.pr_number || github.event.pull_request.number }}
       release-type: testing
-      authenticate_with_ghcr: false
       push-to-registry: >-
         ${{ 
           github.event_name == 'workflow_dispatch' ||
