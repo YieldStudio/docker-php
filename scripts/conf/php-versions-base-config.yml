@@ -1,7 +1,8 @@
 php_variations:
-  - name: cli
-    default: true
+  #- name: cli
+  #  default: true
   - name: frankenphp
+    default: true
     excluded_minor_versions:
       - "7.4"
       - "8.0"
@@ -73,43 +74,33 @@ operating_systems:
       - name: "Alpine 3.16"
         version: alpine3.16
         number: 3.16
-        nginx_version: 1.26.1-r2
       - name: "Alpine 3.17"
         version: alpine3.17
         number: 3.17
-        nginx_version: 1.26.2-r1
       - name: "Alpine 3.18"
         version: alpine3.18
         number: 3.18
-        nginx_version: 1.28.0-r1
       - name: "Alpine 3.19"
         version: alpine3.19
         number: 3.19
-        nginx_version: 1.28.0-r1
       - name: "Alpine 3.20"
         version: alpine3.20
         number: 3.20
-        nginx_version: 1.28.0-r1
       - name: "Alpine 3.21"
         version: alpine3.21
         number: 3.21
-        nginx_version: 1.28.0-r1
       - name: "Alpine 3.22"
         version: alpine3.22
         number: 3.22
-        nginx_version: 1.28.0-r1
   - family: debian
     default: true
     versions:
       - name: "Debian Bullseye"
         version: bullseye
         number: 11
-        nginx_version: 1.28.0-1~bullseye
       - name: "Debian Bookworm"
         version: bookworm
         number: 12
-        nginx_version: 1.28.0-1~bookworm
       - name: "Debian Trixie"
         version: trixie
         number: 13
-        nginx_version: 1.28.0-1~trixie

@@ -9,7 +9,7 @@ FROM php:${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}
 
 ARG DEPENDENCY_PACKAGES_ALPINE='shadow'
 ARG DEPENDENCY_PACKAGES_DEBIAN='procps zip'
-ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip'
+ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip intl'
 ARG REPOSITORY_BUILD_VERSION='dev'
 
 ENV APP_BASE_DIR=/var/www/html \
