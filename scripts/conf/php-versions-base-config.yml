@@ -1,18 +1,12 @@
 php_variations:
   - name: cli
     default: true
-  - name: fpm
-  - name: fpm-apache
-    supported_os: # Open a discussion on serversideup/php if you want to see Alpine support for fpm-apache (https://github.com/serversideup/docker-php/discussions/66)
-      - bullseye
-      - bookworm
-      - trixie
-  - name: fpm-nginx
-  - name: unit
-    supported_os: # Alpine with Unit is not supported yet. Submit a PR if you can help (https://github.com/serversideup/docker-php/issues/233)
-      - bullseye
-      - bookworm
-      - trixie
+  - name: frankenphp
+    excluded_minor_versions:
+      - "7.4"
+      - "8.0"
+      - "8.1"
+      - "8.2"
 
 php_versions:
   - major: "7"

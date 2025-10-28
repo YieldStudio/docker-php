@@ -23,7 +23,7 @@ jobs:
     needs: get-latest-beta-release
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
-      registry-repositories: "docker.io/serversideup/php,ghcr.io/serversideup/php"
+      registry-repositories: "ghcr.io/yieldstudio/php"
       tag-prefix: "beta"
       release-type: "testing"
       ref: ${{ needs.get-latest-beta-release.outputs.release_tag }}
