@@ -23,7 +23,7 @@ jobs:
     needs: get-latest-release
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
-      registry-repositories: "docker.io/serversideup/php,ghcr.io/serversideup/php"
+      registry-repositories: "ghcr.io/yieldstudio/php"
       tag-prefix: ''
       release-type: "latest"
       ref: ${{ needs.get-latest-release.outputs.release_tag }}

@@ -7,7 +7,7 @@ jobs:
   build-dev-images:
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
-      registry-repositories: "docker.io/serversideup/php-dev" # Set to our development repository
+      registry-repositories: "ghcr.io/yieldstudio/php-dev" # Set to our development repository
       tag-prefix: ''
       release-type: latest
       authenticate_with_ghcr: false

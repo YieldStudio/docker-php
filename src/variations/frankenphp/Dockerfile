@@ -35,8 +35,8 @@ RUN set -eux; \
     chmod -R 755 /var/www/; \
     \
     # Set the image version
-    echo "${REPOSITORY_BUILD_VERSION}" > /etc/serversideup-php-version; \
-    echo "${FRANKENPHP_VERSION}" > /etc/serversideup-php-frankenphp-version;
+    echo "${REPOSITORY_BUILD_VERSION}" > /etc/php-version; \
+    echo "${FRANKENPHP_VERSION}" > /etc/php-frankenphp-version;
     # \
     # # Make composer cache directory
     # mkdir -p "${COMPOSER_HOME}"; \
@@ -64,8 +64,8 @@ ENV GOTOOLCHAIN="local"
 COPY --from=caddy:builder /usr/bin/xcaddy /usr/bin/xcaddy
 
 # Install dependencies & Download FrankenPHP
-RUN docker-php-serversideup-dep-install-alpine "$PHPIZE_DEPS ${BUILD_DEPENDENCY_PACKAGES_ALPINE}" && \
-    docker-php-serversideup-dep-install-debian "${BUILD_DEPENDENCY_PACKAGES_DEBIAN}"
+RUN docker-php-dep-install-alpine "$PHPIZE_DEPS ${BUILD_DEPENDENCY_PACKAGES_ALPINE}" && \
+    docker-php-dep-install-debian "${BUILD_DEPENDENCY_PACKAGES_DEBIAN}"
 
 # Install e-dant/watcher (necessary for file watching)
 WORKDIR /usr/local/src/watcher
@@ -117,17 +117,7 @@ ARG DEPENDENCY_PACKAGES_DEBIAN='procps libstdc++6'
 ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip'
 ARG REPOSITORY_BUILD_VERSION='dev'
 
-LABEL org.opencontainers.image.title="serversideup/php (frankenphp)" \
-    org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images, serversideup/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \
-    org.opencontainers.image.url="https://serversideup.net/open-source/docker-php/" \
-    org.opencontainers.image.source="https://github.com/serversideup/docker-php" \
-    org.opencontainers.image.documentation="https://serversideup.net/open-source/docker-php/docs/" \
-    org.opencontainers.image.vendor="ServerSideUp" \
-    org.opencontainers.image.authors="Jay Rogers (@jaydrogers)" \
-    org.opencontainers.image.version="${REPOSITORY_BUILD_VERSION}" \
-    org.opencontainers.image.licenses="GPL-3.0-or-later"
-
-    ENV APP_BASE_DIR=/var/www/html \
+ENV APP_BASE_DIR=/var/www/html \
     CADDY_ADMIN="off" \
     CADDY_APP_PUBLIC_PATH="/var/www/html/public" \
     CADDY_AUTO_HTTPS="off" \
@@ -191,8 +181,8 @@ COPY src/variations/frankenphp/etc/frankenphp/ /etc/frankenphp/
 COPY src/variations/frankenphp/etc/entrypoint.d/ /etc/entrypoint.d/
 
 RUN \
-    docker-php-serversideup-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}"; \
-    docker-php-serversideup-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"; \
+    docker-php-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}"; \
+    docker-php-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"; \
     # Fix for the file watcher on arm
     if cat /etc/os-release | grep -q 'alpine'; then \
         ldconfig /usr/local/lib; \
@@ -207,14 +197,14 @@ RUN \
     chown -R www-data:www-data "${COMPOSER_HOME}" && \
     \
     # Set the image version
-    echo "${REPOSITORY_BUILD_VERSION}" > /etc/serversideup-php-version && \
+    echo "${REPOSITORY_BUILD_VERSION}" > /etc/php-version && \
     \
     # Install PHP Extension installer
-    docker-php-serversideup-install-php-ext-installer; \
+    docker-php-install-php-ext-installer; \
     # Install default PHP extensions
     install-php-extensions "${DEPENDENCY_PHP_EXTENSIONS}"; \
     # Ensure permissions are set for www-data
-    docker-php-serversideup-set-file-permissions --owner www-data:www-data --service frankenphp
+    docker-php-set-file-permissions --owner www-data:www-data --service frankenphp
 
 WORKDIR ${APP_BASE_DIR}
 
@@ -222,7 +212,7 @@ USER www-data
 
 EXPOSE 8080 8443 8443/udp 2019
 
-ENTRYPOINT ["docker-php-serversideup-entrypoint"]
+ENTRYPOINT ["docker-php-entrypoint"]
 
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
 

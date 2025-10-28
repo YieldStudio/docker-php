@@ -24,7 +24,7 @@ PHP_BUILD_VERSION=""
 PHP_BUILD_VARIATION=""
 PHP_BUILD_BASE_OS=""
 PHP_BUILD_PREFIX=""
-DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-"serversideup/php"}"
+DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-"yieldstudio/php"}"
 DOCKER_ADDITIONAL_BUILD_ARGS=()
 PUSH_TO_REGISTRY=false
 PLATFORM=""
@@ -101,10 +101,6 @@ build_docker_image() {
   build_args+=(--build-arg PHP_VERSION="$PHP_BUILD_VERSION")
   build_args+=(--build-arg BASE_OS_VERSION="$PHP_BUILD_BASE_OS")
 
-  if [ -n "$NGINX_VERSION" ] && [ "$PHP_BUILD_VARIATION" = "fpm-nginx" ]; then
-    build_args+=(--build-arg "NGINX_VERSION=$NGINX_VERSION")
-  fi
-
   docker buildx build \
     "${DOCKER_ADDITIONAL_BUILD_ARGS[@]}" \
     --platform "$PLATFORM" \
@@ -130,7 +126,7 @@ help_menu() {
     echo "arguments to the docker build command."
     echo
     echo "Options:"
-    echo "  --variation <variation>   Set the PHP variation (e.g., apache, fpm)"
+    echo "  --variation <variation>   Set the PHP variation (e.g., cli, frankenphp)"
     echo "  --version <version>       Set the PHP version (e.g., 7.4, 8.0)"
     echo "  --os <os>                 Set the base OS (e.g., bullseye, bookworm, alpine)"
     echo "  --prefix <prefix>         Set the prefix for the Docker image (e.g., beta)"
@@ -195,24 +191,5 @@ check_vars \
   PHP_BUILD_VARIATION \
   PHP_BUILD_VERSION \
   PHP_BUILD_BASE_OS
-
-# Auto-resolve NGINX version for fpm-nginx if not provided
-if [ -z "$NGINX_VERSION" ] && [ "$PHP_BUILD_VARIATION" = "fpm-nginx" ]; then
-  if ! command -v yq >/dev/null 2>&1; then
-    echo_color_message red "yq is required but not found. Install 'yq' (https://github.com/mikefarah/yq) to continue."
-    exit 1
-  fi
-
-  NGINX_VERSION=$(BASE_OS="$PHP_BUILD_BASE_OS" yq -r '.operating_systems[].versions[] | select(.version == env(BASE_OS)) | .nginx_version' "$BASE_PHP_VERSIONS_CONFIG_FILE")
-
-  if [ -z "$NGINX_VERSION" ] || [ "$NGINX_VERSION" = "null" ]; then
-    echo_color_message red "❌ Unable to determine NGINX version for OS '$PHP_BUILD_BASE_OS' from $BASE_PHP_VERSIONS_CONFIG_FILE"
-    echo
-    echo "Ensure an entry exists under 'operating_systems' with version: $PHP_BUILD_BASE_OS and a valid 'nginx_version' key."
-    exit 1
-  fi
-
-  echo_color_message green "✅ Using NGINX version '$NGINX_VERSION' for OS '$PHP_BUILD_BASE_OS'"
-fi
 
 build_docker_image

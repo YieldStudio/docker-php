@@ -9,7 +9,7 @@
 
 	skip_install_trust
 
-	# Match serversideup/php log levels to Caddy global log levels
+	# Match php log levels to Caddy global log levels
 	import log-level/global/{$LOG_OUTPUT_LEVEL:info}.caddyfile
 
 	frankenphp {
@@ -69,7 +69,7 @@ fd00::/8 \
 
 	encode zstd br gzip
 
-	# Match serversideup/php log levels to Caddy address log levels
+	# Match php log levels to Caddy address log levels
 	import log-level/address/{$LOG_OUTPUT_LEVEL:info}.caddyfile
 
 	# Define the Caddy healthcheck endpoint

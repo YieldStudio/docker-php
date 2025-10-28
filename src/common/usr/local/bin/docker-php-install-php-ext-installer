@@ -2,11 +2,11 @@
 set -oe
 
 ###################################################
-# Usage: docker-php-serversideup-install-php-ext-installer [version]
+# Usage: docker-php-install-php-ext-installer [version]
 ###################################################
 # This script installs the "install-php-extensions" script from 
 # https://github.com/mlocati/docker-php-extension-installer
-script_name="docker-php-serversideup-install-php-ext-installer"
+script_name="docker-php-install-php-ext-installer"
 
 ############
 # Environment variables

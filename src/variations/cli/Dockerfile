@@ -12,16 +12,6 @@ ARG DEPENDENCY_PACKAGES_DEBIAN='procps zip'
 ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip'
 ARG REPOSITORY_BUILD_VERSION='dev'
 
-LABEL org.opencontainers.image.title="serversideup/php (cli)" \
-    org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images, serversideup/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \
-    org.opencontainers.image.url="https://serversideup.net/open-source/docker-php/" \
-    org.opencontainers.image.source="https://github.com/serversideup/docker-php" \
-    org.opencontainers.image.documentation="https://serversideup.net/open-source/docker-php/docs/" \
-    org.opencontainers.image.vendor="ServerSideUp" \
-    org.opencontainers.image.authors="Jay Rogers (@jaydrogers)" \
-    org.opencontainers.image.version="${REPOSITORY_BUILD_VERSION}" \
-    org.opencontainers.image.licenses="GPL-3.0-or-later"
-
 ENV APP_BASE_DIR=/var/www/html \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/composer \
@@ -61,16 +51,16 @@ ENV APP_BASE_DIR=/var/www/html \
 COPY --chmod=755 src/common/ /
 
 # install pecl extensions & dependencies
-RUN docker-php-serversideup-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}" && \
-    docker-php-serversideup-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"  && \
-    docker-php-serversideup-install-php-ext-installer && \
+RUN docker-php-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}" && \
+    docker-php-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"  && \
+    docker-php-install-php-ext-installer && \
     \
     # Ensure /var/www/ has the correct permissions
     chown -R www-data:www-data /var/www && \
     chmod -R 755 /var/www && \
     \
     # Set the image version
-    echo "${REPOSITORY_BUILD_VERSION}" > /etc/serversideup-php-version && \
+    echo "${REPOSITORY_BUILD_VERSION}" > /etc/php-version && \
     \
     # Make composer cache directory
     mkdir -p "${COMPOSER_HOME}" && \
@@ -82,10 +72,10 @@ RUN docker-php-serversideup-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}" &
 # install composer from Composer's official Docker image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN docker-php-serversideup-set-file-permissions --owner www-data:www-data --service cli
+RUN docker-php-set-file-permissions --owner www-data:www-data --service cli
 
 WORKDIR ${APP_BASE_DIR}
 
 USER www-data
 
-ENTRYPOINT ["docker-php-serversideup-entrypoint"]
+ENTRYPOINT ["docker-php-entrypoint"]

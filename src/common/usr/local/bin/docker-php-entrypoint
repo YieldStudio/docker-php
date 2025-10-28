@@ -2,8 +2,7 @@
 set -e
 
 # Initialize variables
-SERVERSIDEUP_DEFAULT_COMMAND="false"
-S6_INITIALIZED="false"
+DEFAULT_COMMAND="false"
 
 # Enable debug mode if LOG_OUTPUT_LEVEL is set to "debug"
 if [ "$LOG_OUTPUT_LEVEL" = "debug" ]; then
@@ -13,30 +12,19 @@ fi
 
 # Check if the default command is being used
 case "$1" in
-    "/init" | "php-fpm")
-        SERVERSIDEUP_DEFAULT_COMMAND="true"
-        ;;
-    "unitd")
-        if [ "$2" = "--no-daemon" ]; then
-            SERVERSIDEUP_DEFAULT_COMMAND="true"
-        fi
+    "/init")
+        DEFAULT_COMMAND="true"
         ;;
 esac
 
-# Check if S6 overlay is initialized
-if [ -d "/etc/s6-overlay" ] && [ "$SERVERSIDEUP_DEFAULT_COMMAND" = "true" ]; then
-    S6_INITIALIZED="true"
-fi
-
 # Export variables
-export SERVERSIDEUP_DEFAULT_COMMAND
-export S6_INITIALIZED
+export DEFAULT_COMMAND
 
 # Export the CMD for use in initialization scripts
 export DOCKER_CMD="$*"
 
 ###############################################
-# Usage: docker-php-serversideup-entrypoint
+# Usage: docker-php-entrypoint
 ###############################################
 # This script is used to execute scripts from "/etc/entrypoint.d" and then
 # execute the CMD passed in from the Dockerfile.

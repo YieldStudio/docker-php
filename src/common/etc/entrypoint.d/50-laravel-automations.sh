@@ -10,7 +10,9 @@ script_name="laravel-automations"
 : "${AUTORUN_ENABLED:=false}"
 : "${AUTORUN_DEBUG:=false}"
 
+
 # Set default values for storage link
+: "${AUTORUN_LARAVEL_STORAGE_RECREATE:=false}"
 : "${AUTORUN_LARAVEL_STORAGE_LINK:=true}"
 
 # Set default values for optimizations
@@ -123,6 +125,17 @@ artisan_migrate() {
         # Run migration with default database connection
         php "$APP_BASE_DIR/artisan" $migration_command $migrate_flags
     fi
+}
+
+artisan_storage_recreate() {
+    storage_paths='storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/testings storage/framework/views storage/logs'
+    for path in ${storage_paths}; do
+        $full_path="$APP_BASE_DIR/$path"
+        if [ ! -d "$full_path" ]; then
+            mkdir -p "$full_path"
+            echo "✅ Recreated [$path] directory."
+        fi
+    done
 }
 
 artisan_storage_link() {
@@ -406,6 +419,10 @@ if laravel_is_installed; then
     fi
 
     echo "🤔 Checking for Laravel automations..."
+    if [ "$AUTORUN_LARAVEL_STORAGE_RECREATE" = "true" ]; then
+        artisan_storage_recreate
+    fi
+
     if [ "$AUTORUN_LARAVEL_STORAGE_LINK" = "true" ]; then
         artisan_storage_link
     fi

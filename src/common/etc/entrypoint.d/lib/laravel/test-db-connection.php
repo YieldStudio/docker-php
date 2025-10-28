@@ -16,9 +16,7 @@
  * Exit codes:
  *   0 - Success: Database is ready and accessible
  *   1 - Failure: Database connection failed or other error
- * 
- * @package serversideup/php
- */
+ **/
 
 // Validate arguments
 if ($argc < 2 || $argc > 5) {

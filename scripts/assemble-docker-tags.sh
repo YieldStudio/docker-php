@@ -29,7 +29,7 @@ fi
 DEFAULT_IMAGE_VARIATION="${DEFAULT_IMAGE_VARIATION:-$(yq e -r '.php_variations[] | select(.default == true) | .name' "$PHP_VERSIONS_FILE" 2>/dev/null | head -n1 || true)}"
 
 # Convert comma-separated DOCKER_REGISTRY_REPOSITORIES string to an array
-IFS=',' read -ra DOCKER_REGISTRY_REPOSITORIES <<< "${DOCKER_REGISTRY_REPOSITORIES:-"docker.io/serversideup/php,ghcr.io/serversideup/php"}"
+IFS=',' read -ra DOCKER_REGISTRY_REPOSITORIES <<< "${DOCKER_REGISTRY_REPOSITORIES:-"ghcr.io/yieldstudio/php"}"
 DOCKER_TAG_PREFIX="${DOCKER_TAG_PREFIX:-""}"
 RELEASE_TYPE="${RELEASE_TYPE:-"testing"}"
 
@@ -223,14 +223,14 @@ help_menu() {
     echo "any advanced logic issues."
     echo
     echo "Options:"
-    echo "  --variation <variation>         Set the PHP variation (e.g., apache, fpm)"
+    echo "  --variation <variation>         Set the PHP variation (e.g., cli, frankenphp)"
     echo "  --os <os>                       Set the base OS (e.g., bullseye, bookworm, alpine)"
     echo "  --patch-version <patch-version> Set the PHP patch version (e.g., 7.4.10)"
     echo "  --github-release-tag <tag>      Set the GitHub release tag"
     echo "  --stable-release                Flag the tags for a stable release"
     echo
     echo "Environment Variables (Defaults):"
-    echo "  DOCKER_REGISTRY_REPOSITORIES  Names of images to tag (default: 'docker.io/serversideup/php' 'ghcr.io/serversideup/php')"
+    echo "  DOCKER_REGISTRY_REPOSITORIES  Names of images to tag (default: 'ghcr.io/yieldstudio/php')"
     echo "  PHP_VERSIONS_FILE            Path to PHP versions file (default: scripts/conf/php-versions.yml)"
 }
 
