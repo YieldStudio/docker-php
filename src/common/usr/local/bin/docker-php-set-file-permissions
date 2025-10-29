@@ -134,6 +134,8 @@ case "$OS" in
                     /composer
                     /var/www
                     /etc/ssl/private
+                    /config
+                    /data
                     $PHP_INI_DIR/conf.d/zzz-docker-php-debug.ini"
                 ;;
             *)
@@ -155,6 +157,8 @@ case "$OS" in
                     /composer
                     /var/www
                     /etc/ssl/private
+                    /config
+                    /data
                     $PHP_INI_DIR/conf.d/zzz-docker-php-debug.ini"
                 ;;
             *)

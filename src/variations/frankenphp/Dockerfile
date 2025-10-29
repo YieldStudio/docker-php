@@ -36,11 +36,7 @@ RUN set -eux; \
     \
     # Set the image version
     echo "${REPOSITORY_BUILD_VERSION}" > /etc/php-version; \
-    echo "${FRANKENPHP_VERSION}" > /etc/php-frankenphp-version;
-    # \
-    # # Make composer cache directory
-    # mkdir -p "${COMPOSER_HOME}"; \
-    # chown -R www-data:www-data "${COMPOSER_HOME}";
+    echo "${FRANKENPHP_VERSION}" > /etc/php-frankenphp-version
 
 ####################
 # Go Image
@@ -217,4 +213,4 @@ ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
 
 HEALTHCHECK --start-period=60s --start-interval=3s --interval=10s --timeout=3s --retries=3 \
-    CMD [ "sh", "-c", "curl --insecure --silent --location --show-error --fail http://localhost:8080$HEALTHCHECK_PATH || exit 1" ]
+    CMD [ "sh", "-c", "curl --insecure --silent --location --show-error --fail http://localhost:${CADDY_HTTP_PORT}${HEALTHCHECK_PATH} || exit 1" ]
