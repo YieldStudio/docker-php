@@ -15,13 +15,7 @@ php_versions:
       - minor: "7.4"
         base_os:
           - name: alpine3.16
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bullseye
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
           - 7.4.33
   - major: "8"
@@ -29,89 +23,38 @@ php_versions:
       - minor: "8.0"
         base_os:
           - name: alpine3.16
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bullseye
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
           - 8.0.30
       - minor: "8.1"
         base_os:
           - name: alpine3.21
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bookworm
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: trixie
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
           # - 8.1.28 # Pull latest from Official PHP source
       - minor: "8.2"
         base_os:
           - name: alpine3.21
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: alpine3.22
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bookworm
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: trixie
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
         #   - 8.2.18 # Pull latest from Official PHP source
       - minor: "8.3"
         base_os:
           - name: alpine3.21
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: alpine3.22
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bookworm
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: trixie
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
           # - 8.3.6 # Pull latest from Official PHP source
       - minor: "8.4"
         base_os:
           - name: alpine3.21
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: alpine3.22
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: bookworm
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
           - name: trixie
-            plateforms:
-              - linux/amd64
-              - linux/arm64/v8
         patch_versions:
         #   - 8.4.1 # Pull latest from Official PHP source
       # PHP 8.5-rc has a blocking bug in a dependency that is not yet fixed.
@@ -119,21 +62,9 @@ php_versions:
       # - minor: "8.5-rc"
       #   base_os:
       #     - name: alpine3.21
-      #       plateforms:
-      #         - linux/amd64
-      #         - linux/arm64/v8
       #     - name: alpine3.22
-      #       plateforms:
-      #         - linux/amd64
-      #         - linux/arm64/v8
       #     - name: bookworm
-      #       plateforms:
-      #         - linux/amd64
-      #         - linux/arm64/v8
       #     - name: trixie
-      #       plateforms:
-      #         - linux/amd64
-      #         - linux/arm64/v8
       #   patch_versions:
       #     - 8.5-rc
 
