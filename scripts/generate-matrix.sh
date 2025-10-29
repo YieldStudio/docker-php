@@ -42,8 +42,10 @@ yq -o=json "$PHP_VERSIONS_FILE" | jq -c '
       | select((($variation.excluded_minor_versions // []) | index($minor.minor)) | not)
       | $minor.base_os[] as $os
       | $minor.patch_versions[] as $patch
+      | ($os.plateforms // ["linux/amd64"]) as $platforms
+      | $platforms[] as $platform
       | select(is_supported($variation; $os))
-      | {patch_version: $patch, base_os: $os.name, php_variation: $variation.name}
+      | {patch_version: $patch, base_os: $os.name, php_variation: $variation.name, platform: $platform}
     ]
   | { include: ( . | sort_by(.patch_version | version_weight) | reverse ) }
 '
