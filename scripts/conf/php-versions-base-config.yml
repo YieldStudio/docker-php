@@ -1,8 +1,7 @@
 php_variations:
-  #- name: cli
-  #  default: true
-  - name: frankenphp
+  - name: cli
     default: true
+  - name: frankenphp
     excluded_minor_versions:
       - "7.4"
       - "8.0"
