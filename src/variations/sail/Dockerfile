@@ -50,4 +50,6 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN install-php-extensions xdebug
 
+RUN git config --global --add safe.directory /var/www/html
+
 USER www-data
