@@ -16,6 +16,7 @@ jobs:
     needs: build-dev-images
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
+      base-repository: "ghcr.io/yieldstudio/php-dev" # Use the dev base images
       registry-repositories: "ghcr.io/yieldstudio/sail-dev" # Set to our development repository
       tag-prefix: ''
       php-versions-config: 'scripts/conf/sail-versions-base-config.yml'

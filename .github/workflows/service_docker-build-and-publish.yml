@@ -35,6 +35,10 @@ on:
         type: boolean
         default: true
         description: 'Whether to push the images to the registry.'
+      base-repository:
+        type: string
+        default: 'php'
+        description: 'The base repository to use for the Docker images.'
       ref:
         type: string
         default: ${{ github.ref }}
@@ -166,6 +170,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha
           build-args: |
+            BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
             PHP_VERSION=${{ matrix.patch_version }}
             PHP_VARIATION=${{ matrix.php_variation }}
