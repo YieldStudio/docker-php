@@ -172,7 +172,7 @@ jobs:
         with:
           file: src/variations/${{ matrix.php_variation }}/Dockerfile
           cache-from: type=gha
-          cache-to: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
