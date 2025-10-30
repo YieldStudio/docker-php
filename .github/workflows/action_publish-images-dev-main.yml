@@ -11,3 +11,14 @@ jobs:
       tag-prefix: ''
       release-type: latest
     secrets: inherit
+
+  build-sail-images:
+    needs: build-dev-images
+    uses: ./.github/workflows/service_docker-build-and-publish.yml
+    with:
+      registry-repositories: "ghcr.io/yieldstudio/sail-dev" # Set to our development repository
+      tag-prefix: ''
+      php-versions-config: 'scripts/conf/sail-versions-base-config.yml'
+      php-versions-file: 'scripts/conf/sail-versions.yml'
+      release-type: latest
+    secrets: inherit

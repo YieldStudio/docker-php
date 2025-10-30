@@ -15,6 +15,10 @@ on:
         required: true
         type: string
         description: 'The prefix to use for the Docker image tags.'
+      php-versions-config:
+        type: string
+        default: 'scripts/conf/php-versions-base-config.yml'
+        description: 'The path to the PHP versions file.'
       php-versions-file:
         type: string
         default: 'scripts/conf/php-versions.yml'
@@ -50,7 +54,7 @@ jobs:
     - name: Prepare PHP versions for the matrix. 😎
       run: |
         chmod +x ./scripts/get-php-versions.sh
-        ./scripts/get-php-versions.sh
+        ./scripts/get-php-versions.sh --input ${{ inputs.php-versions-config }} --output ${{ inputs.php-versions-file }}
       env:
         SKIP_DOWNLOAD: false
     
