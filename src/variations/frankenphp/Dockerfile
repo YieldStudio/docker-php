@@ -111,7 +111,7 @@ RUN if cat /etc/os-release | grep -q 'debian'; then \
 FROM common AS final
 ARG DEPENDENCY_PACKAGES_ALPINE='shadow libstdc++ icu-data-full'
 ARG DEPENDENCY_PACKAGES_DEBIAN='procps libstdc++6'
-ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip intl gd bcmath exif imagick opentelemetry'
+ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip xml sqlite3 intl gd bcmath pcov exif imagick opentelemetry soap sockets memcached'
 ARG REPOSITORY_BUILD_VERSION='dev'
 
 ENV APP_BASE_DIR=/var/www/html \
