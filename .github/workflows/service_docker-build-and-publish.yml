@@ -91,6 +91,10 @@ jobs:
   docker-publish:
     needs: setup-matrix
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
     strategy:
       matrix: ${{fromJson(needs.setup-matrix.outputs.php-version-map-json)}}
 
@@ -185,4 +189,8 @@ jobs:
           pull: true
           push: ${{ inputs.push-to-registry }}
           tags: ${{ env.DOCKER_TAGS }}
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Supercharge your PHP experience with Docker images that are based off the official PHP images but are optimized to be run in production environments for Laravel and WordPress and more
+          outputs: |
+            type=image
+            name=target
+            annotation-index.org.opencontainers.image.description=Supercharge your PHP experience with Docker images that are based off the official PHP images but are optimized to be run in production environments for Laravel and WordPress and more
+            annotation-index.org.opencontainers.image.source=https://github.com/YieldStudio/docker-php
