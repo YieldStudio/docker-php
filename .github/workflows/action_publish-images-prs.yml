@@ -29,3 +29,21 @@ jobs:
           (github.event_name == 'pull_request' && github.event.pull_request.head.repo.owner.type == 'Organization')
         }}
     secrets: inherit
+
+  build-sail-images:
+    needs: build-dev-images
+    uses: ./.github/workflows/service_docker-build-and-publish.yml
+    with:
+      base-repository: "ghcr.io/yieldstudio/php-dev"
+      registry-repositories: "ghcr.io/yieldstudio/sail-dev"
+      tag-prefix: ${{ inputs.pr_number || github.event.pull_request.number }}
+      php-versions-config: 'scripts/conf/sail-versions-base-config.yml'
+      php-versions-file: 'scripts/conf/sail-versions.yml'
+      artifact-name: 'sail-versions.yml'
+      release-type: testing
+      push-to-registry: >-
+        ${{ 
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'pull_request' && github.event.pull_request.head.repo.owner.type == 'Organization')
+        }}
+    secrets: inherit

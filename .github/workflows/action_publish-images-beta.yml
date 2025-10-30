@@ -28,3 +28,17 @@ jobs:
       release-type: "testing"
       ref: ${{ needs.get-latest-beta-release.outputs.release_tag }}
     secrets: inherit
+
+  build-beta-sail-images:
+    needs: [build-beta-images, get-latest-beta-release]
+    uses: ./.github/workflows/service_docker-build-and-publish.yml
+    with:
+      base-repository: "ghcr.io/yieldstudio/php" # Use the dev base images
+      registry-repositories: "ghcr.io/yieldstudio/sail" # Set to our development repository
+      tag-prefix: 'beta'
+      php-versions-config: 'scripts/conf/sail-versions-base-config.yml'
+      php-versions-file: 'scripts/conf/sail-versions.yml'
+      artifact-name: 'sail-versions.yml'
+      release-type: testing
+      ref: ${{ needs.get-latest-beta-release.outputs.release_tag }}
+    secrets: inherit

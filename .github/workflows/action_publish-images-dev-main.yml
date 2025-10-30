@@ -21,6 +21,6 @@ jobs:
       tag-prefix: ''
       php-versions-config: 'scripts/conf/sail-versions-base-config.yml'
       php-versions-file: 'scripts/conf/sail-versions.yml'
-      release-type: latest
       artifact-name: 'sail-versions.yml'
+      release-type: latest
     secrets: inherit

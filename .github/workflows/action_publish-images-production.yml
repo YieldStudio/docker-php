@@ -28,3 +28,17 @@ jobs:
       release-type: "latest"
       ref: ${{ needs.get-latest-release.outputs.release_tag }}
     secrets: inherit
+
+  build-sail-images:
+    needs: [build-production-images, get-latest-release]
+    uses: ./.github/workflows/service_docker-build-and-publish.yml
+    with:
+      base-repository: "ghcr.io/yieldstudio/php"
+      registry-repositories: "ghcr.io/yieldstudio/sail"
+      tag-prefix: ''
+      php-versions-config: 'scripts/conf/sail-versions-base-config.yml'
+      php-versions-file: 'scripts/conf/sail-versions.yml'
+      artifact-name: 'sail-versions.yml'
+      release-type: latest
+      ref: ${{ needs.get-latest-release.outputs.release_tag }}
+    secrets: inherit
