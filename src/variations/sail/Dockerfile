@@ -11,8 +11,6 @@ FROM ${BASE_IMAGE} AS common
 
 ARG SOPS_VERSION="v3.10.2"
 ARG NODE_VERSION=24
-ARG MYSQL_CLIENT="mysql-client"
-ARG POSTGRES_VERSION=18
 
 ENV AUTORUN_ENABLED=false \
     PHP_OPCACHE_ENABLE=0 \
@@ -36,12 +34,8 @@ RUN apt-get update && apt-get upgrade -y \
     && npx playwright install-deps \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /etc/apt/keyrings/yarn.gpg >/dev/null \
     && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-    && curl -sS https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | tee /etc/apt/keyrings/pgdg.gpg >/dev/null \
-    && echo "deb [signed-by=/etc/apt/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt $(. /etc/os-release && echo "$VERSION_CODENAME")-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y yarn \
-    && apt-get install -y $MYSQL_CLIENT \
-    && apt-get install -y postgresql-client-$POSTGRES_VERSION \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
