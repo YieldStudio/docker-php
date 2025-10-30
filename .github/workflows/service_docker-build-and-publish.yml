@@ -39,6 +39,10 @@ on:
         type: string
         default: 'php'
         description: 'The base repository to use for the Docker images.'
+      artifact-name:
+        type: string
+        default: 'php-versions.yml'
+        description: 'The name of the artifact to upload/download the PHP versions file.'
       ref:
         type: string
         default: ${{ github.ref }}
@@ -77,11 +81,11 @@ jobs:
         MATRIX_JSON=$(bash ./scripts/generate-matrix.sh '${{ inputs.php-versions-file }}')
         echo "php-version-map-json=${MATRIX_JSON}" >> $GITHUB_OUTPUT
         echo "${MATRIX_JSON}" | jq '.'
-  
-    - name: Upload the php-versions.yml file
+
+    - name: Upload the ${{ inputs.artifact-name }} file
       uses: actions/upload-artifact@v4
       with:
-        name: php-versions.yml
+        name: ${{ inputs.artifact-name }}
         path: ${{ inputs.php-versions-file }}
 
   docker-publish:
@@ -99,12 +103,12 @@ jobs:
       - name: Download PHP Versions file
         uses: actions/download-artifact@v5
         with:
-          name: php-versions.yml
+          name: ${{ inputs.artifact-name }}
           path: ./artifacts
       
       - name: Move PHP Versions file
-        run: mv ./artifacts/php-versions.yml ${{ inputs.php-versions-file }}
-      
+        run: mv ./artifacts/${{ inputs.artifact-name }} ${{ inputs.php-versions-file }}
+
       ##
       # Docker build & publish
       ##
