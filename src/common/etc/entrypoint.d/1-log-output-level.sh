@@ -31,6 +31,27 @@ case "$LOG_OUTPUT_LEVEL" in
     set_php_ini display_startup_errors On
     set_php_ini error_reporting "32767" # E_ALL
     ;;
+    info)
+    : # Do nothing
+    ;;
+    notice)
+    : # Do nothing
+    ;;
+    warn)
+    : # Do nothing
+    ;;
+    error)
+    : # Do nothing
+    ;;
+    crit)
+    : # Do nothing
+    ;;
+    alert)
+    : # Do nothing
+    ;;
+    emerg)
+    : # Do nothing
+    ;;
     *)
     echo "❌ ERROR ($script_name): LOG_OUTPUT_LEVEL is not set to a valid value. Please set it to one of the following: debug, info, notice, warn, error, crit, alert, emerg."
     return 1
