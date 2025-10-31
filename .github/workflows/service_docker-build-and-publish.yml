@@ -185,7 +185,7 @@ jobs:
             PHP_VERSION=${{ matrix.minor }}
             PHP_VARIATION=${{ matrix.php_variation }}
             REPOSITORY_BUILD_VERSION=${{ env.REPOSITORY_BUILD_VERSION }}
-            TAG_PREFIX=${{ inputs.prepend-tag-to-php-version && inputs.tag-prefix || '' }}
+            TAG_PREFIX=${{ (inputs.prepend-tag-to-php-version && inputs.tag-prefix) && format('{0}-', inputs.tag-prefix) || '' }}
           platforms: linux/amd64,linux/arm64
           pull: true
           push: ${{ inputs.push-to-registry }}
