@@ -178,7 +178,7 @@ jobs:
           build-args: |
             BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
-            PHP_VERSION=${{ matrix.minor }}
+            PHP_VERSION=${{ inputs.tag-prefix != '' && format('{0}-{1}', inputs.tag-prefix, matrix.minor) || matrix.minor }}
             PHP_VARIATION=${{ matrix.php_variation }}
             REPOSITORY_BUILD_VERSION=${{ env.REPOSITORY_BUILD_VERSION }}
           platforms: linux/amd64,linux/arm64
