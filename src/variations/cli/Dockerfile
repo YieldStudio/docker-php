@@ -2,12 +2,25 @@ ARG BASE_OS_VERSION='bookworm'
 ARG PHP_VERSION='8.4'
 ARG PHP_VARIATION='cli'
 ARG BASE_REPO='serversideup/php'
-ARG BASE_IMAGE="${BASE_REPO}:${PHP_VERSION}-cli-${BASE_OS_VERSION}-v4.0.0-beta2"
+ARG TAG_PREFIX=''
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-v4.0.0-beta2"
 
 ##########
 # CLI: Main Image
 ##########
 FROM ${BASE_IMAGE}
+
+ARG REPOSITORY_BUILD_VERSION='dev'
+
+LABEL org.opencontainers.image.title="yieldstudio/php (cli)" \
+    org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images and serversideup/php, yieldstudio/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \
+    org.opencontainers.image.url="https://yieldstudio.github.io/docker-php/" \
+    org.opencontainers.image.source="https://github.com/YieldStudio/docker-php" \
+    org.opencontainers.image.documentation="https://yieldstudio.github.io/docker-php/" \
+    org.opencontainers.image.vendor="YieldStudio" \
+    org.opencontainers.image.authors="Arnaud RITTI (@arnaud-ritti)" \
+    org.opencontainers.image.version="${REPOSITORY_BUILD_VERSION}" \
+    org.opencontainers.image.licenses="GPL-3.0-or-later"
 
 ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full'
 ARG DEPENDENCY_PACKAGES_DEBIAN=''
