@@ -141,7 +141,7 @@ jobs:
           ./scripts/assemble-docker-tags.sh
         env:
           PHP_VERSIONS_FILE: "${{ inputs.php-versions-file }}"
-          PHP_BUILD_VERSION: ${{ matrix.patch_version }}
+          PHP_BUILD_VERSION: ${{ matrix.minor }}
           PHP_BUILD_VARIATION: ${{ matrix.php_variation }}
           PHP_BUILD_BASE_OS: ${{ matrix.base_os }}
           DOCKER_TAG_PREFIX: ${{ inputs.tag-prefix }}
@@ -173,12 +173,12 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: src/variations/${{ matrix.php_variation }}/Dockerfile
-          cache-from: type=gha,scope=php-${{ matrix.patch_version }}-${{ matrix.php_variation }}-${{ matrix.base_os }}
-          cache-to: type=gha,scope=php-${{ matrix.patch_version }}-${{ matrix.php_variation }}-${{ matrix.base_os }},mode=max
+          cache-from: type=gha,scope=php-${{ matrix.minor }}-${{ matrix.php_variation }}-${{ matrix.base_os }}
+          cache-to: type=gha,scope=php-${{ matrix.minor }}-${{ matrix.php_variation }}-${{ matrix.base_os }},mode=max
           build-args: |
             BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
-            PHP_VERSION=${{ matrix.patch_version }}
+            PHP_VERSION=${{ matrix.minor }}
             PHP_VARIATION=${{ matrix.php_variation }}
             REPOSITORY_BUILD_VERSION=${{ env.REPOSITORY_BUILD_VERSION }}
           platforms: linux/amd64,linux/arm64
