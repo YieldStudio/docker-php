@@ -173,8 +173,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: src/variations/${{ matrix.php_variation }}/Dockerfile
-          cache-from: type=gha,scope=php-${{ matrix.minor }}-${{ matrix.php_variation }}-${{ matrix.base_os }}
-          cache-to: type=gha,scope=php-${{ matrix.minor }}-${{ matrix.php_variation }}-${{ matrix.base_os }},mode=max
+          cache-from: type=gha
+          cache-to: type=gha
           build-args: |
             BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
