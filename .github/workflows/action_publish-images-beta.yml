@@ -40,5 +40,6 @@ jobs:
       php-versions-file: 'scripts/conf/sail-versions.yml'
       artifact-name: 'sail-versions.yml'
       release-type: testing
+      prepend-tag-to-php-version: true
       ref: ${{ needs.get-latest-beta-release.outputs.release_tag }}
     secrets: inherit
