@@ -1,8 +1,9 @@
 # check=skip=SecretsUsedInArgOrEnv
 ARG BASE_OS_VERSION='trixie'
 ARG PHP_VERSION='8.4'
-ARG BASE_REPO='ghcr.io/yieldstudio/php-dev'
-ARG BASE_IMAGE="${BASE_REPO}:${PHP_VERSION}-frankenphp-${BASE_OS_VERSION}"
+ARG BASE_REPO='ghcr.io/yieldstudio/php'
+ARG TAG_PREFIX=''
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-frankenphp-${BASE_OS_VERSION}"
 
 ########################
 # Common
@@ -22,8 +23,7 @@ USER root
 
 RUN apt-get update && apt-get upgrade -y \
     && mkdir -p /etc/apt/keyrings \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python3 dnsutils librsvg2-bin fswatch ffmpeg nano age  \
-    && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
+    && apt-get install -y gnupg gosu curl zip unzip git sqlite3 libpng-dev python3 dnsutils librsvg2-bin fswatch ffmpeg nano age  \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \

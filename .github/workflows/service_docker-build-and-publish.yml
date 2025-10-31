@@ -47,6 +47,10 @@ on:
         type: string
         default: ${{ github.ref }}
         description: 'The git ref to checkout (branch, tag, or commit SHA)'
+      prepend-tag-to-php-version:
+        type: boolean
+        default: false
+        description: 'Whether to prepend the tag prefix to the PHP version in the Docker tag.'
 
 jobs:
   setup-matrix:
@@ -178,9 +182,10 @@ jobs:
           build-args: |
             BASE_REPO=${{ inputs.base-repository }}
             BASE_OS_VERSION=${{ matrix.base_os }}
-            PHP_VERSION=${{ inputs.tag-prefix != '' && format('{0}-{1}', inputs.tag-prefix, matrix.minor) || matrix.minor }}
+            PHP_VERSION=${{ matrix.minor }}
             PHP_VARIATION=${{ matrix.php_variation }}
             REPOSITORY_BUILD_VERSION=${{ env.REPOSITORY_BUILD_VERSION }}
+            TAG_PREFIX=${{ inputs.prepend-tag-to-php-version && inputs.tag-prefix || '' }}
           platforms: linux/amd64,linux/arm64
           pull: true
           push: ${{ inputs.push-to-registry }}

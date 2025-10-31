@@ -1,8 +1,10 @@
 # check=skip=SecretsUsedInArgOrEnv
 ARG BASE_OS_VERSION='trixie'
 ARG PHP_VERSION='8.4'
+ARG PHP_VARIATION='frankenphp'
 ARG BASE_REPO='serversideup/php'
-ARG BASE_IMAGE="${BASE_REPO}:${PHP_VERSION}-frankenphp-${BASE_OS_VERSION}-v4.0.0-beta2"
+ARG TAG_PREFIX=''
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-v4.0.0-beta2"
 
 ########################
 # Common
