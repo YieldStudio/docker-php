@@ -10,9 +10,8 @@ script_name="laravel-automations"
 : "${AUTORUN_ENABLED:=false}"
 : "${AUTORUN_DEBUG:=false}"
 
-
 # Set default values for storage link
-: "${AUTORUN_LARAVEL_STORAGE_RECREATE:=false}"
+: "${AUTORUN_LARAVEL_STORAGE_RECREATE:=true}"
 : "${AUTORUN_LARAVEL_STORAGE_LINK:=true}"
 
 # Set default values for optimizations
@@ -125,6 +124,15 @@ artisan_migrate() {
         # Run migration with default database connection
         php "$APP_BASE_DIR/artisan" $migration_command $migrate_flags
     fi
+}
+
+artisan_setup_octane() {
+    echo "🚀 Setup Laravel Octane: \"php artisan octane:install --server=$OCTANE_SERVER\"..."
+    if ! php "$APP_BASE_DIR/artisan" octane:install --server=$OCTANE_SERVER; then
+        echo "❌ $script_name: Laravel Octane setup failed"
+        return 1
+    fi
+    return 0
 }
 
 artisan_storage_recreate() {
@@ -419,6 +427,11 @@ if laravel_is_installed; then
     fi
 
     echo "🤔 Checking for Laravel automations..."
+    # If OCTANE_SERVER is set, run the Octane setup
+    if [ -n "$OCTANE_SERVER" ]; then
+        artisan_setup_octane
+    fi
+    
     if [ "$AUTORUN_LARAVEL_STORAGE_RECREATE" = "true" ]; then
         artisan_storage_recreate
     fi
