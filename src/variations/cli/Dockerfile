@@ -1,81 +1,29 @@
 ARG BASE_OS_VERSION='bookworm'
 ARG PHP_VERSION='8.4'
 ARG PHP_VARIATION='cli'
+ARG BASE_REPO='serversideup/php'
+ARG BASE_IMAGE="${BASE_REPO}:${PHP_VERSION}-cli-${BASE_OS_VERSION}-v4.0.0-beta2"
 
 ##########
 # CLI: Main Image
 ##########
-FROM php:${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}
+FROM ${BASE_IMAGE}
 
-ARG DEPENDENCY_PACKAGES_ALPINE='shadow'
-ARG DEPENDENCY_PACKAGES_DEBIAN='procps zip'
-ARG DEPENDENCY_PHP_EXTENSIONS='opcache pcntl pdo_mysql pdo_pgsql redis zip intl'
-ARG REPOSITORY_BUILD_VERSION='dev'
+ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full'
+ARG DEPENDENCY_PACKAGES_DEBIAN=''
+ARG DEPENDENCY_PHP_EXTENSIONS='intl'
 
-ENV APP_BASE_DIR=/var/www/html \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    COMPOSER_HOME=/composer \
-    COMPOSER_MAX_PARALLEL_HTTP=24 \
-    DISABLE_DEFAULT_CONFIG=false \
-    LOG_OUTPUT_LEVEL=warn \
-    PHP_DATE_TIMEZONE="UTC" \
-    PHP_DISPLAY_ERRORS=Off \
-    PHP_DISPLAY_STARTUP_ERRORS=Off \
-    PHP_ERROR_LOG="/dev/stderr" \
-    PHP_ERROR_REPORTING="22527" \
-    PHP_MAX_EXECUTION_TIME="99" \
-    PHP_MAX_INPUT_TIME="-1" \
-    PHP_MAX_INPUT_VARS="1000" \
-    PHP_MEMORY_LIMIT="256M" \
-    PHP_OPCACHE_ENABLE="0" \
-    PHP_OPCACHE_ENABLE_FILE_OVERRIDE="0" \
-    PHP_OPCACHE_FORCE_RESTART_TIMEOUT="180" \
-    PHP_OPCACHE_INTERNED_STRINGS_BUFFER="8" \
-    PHP_OPCACHE_JIT="off" \
-    PHP_OPCACHE_JIT_BUFFER_SIZE="0" \
-    PHP_OPCACHE_MAX_ACCELERATED_FILES="10000" \
-    PHP_OPCACHE_MEMORY_CONSUMPTION="128" \
-    PHP_OPCACHE_REVALIDATE_FREQ="2" \
-    PHP_OPCACHE_SAVE_COMMENTS="1" \
-    PHP_OPCACHE_VALIDATE_TIMESTAMPS="1" \
-    PHP_OPEN_BASEDIR="" \
-    PHP_POST_MAX_SIZE="100M" \
-    PHP_REALPATH_CACHE_TTL="120" \
-    PHP_SESSION_COOKIE_SECURE=false \
-    PHP_UPLOAD_MAX_FILE_SIZE="100M" \
-    PHP_ZEND_DETECT_UNICODE="" \
-    PHP_ZEND_MULTIBYTE="Off" \
-    SHOW_WELCOME_MESSAGE=true
+USER root
 
 # copy our scripts
 COPY --chmod=755 src/common/ /
 
-# install pecl extensions & dependencies
-RUN docker-php-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}" && \
-    docker-php-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"  && \
-    docker-php-install-php-ext-installer && \
-    \
-    # Ensure /var/www/ has the correct permissions
-    chown -R www-data:www-data /var/www && \
-    chmod -R 755 /var/www && \
-    \
-    # Set the image version
-    echo "${REPOSITORY_BUILD_VERSION}" > /etc/php-version && \
-    \
-    # Make composer cache directory
-    mkdir -p "${COMPOSER_HOME}" && \
-    chown -R www-data:www-data "${COMPOSER_HOME}" && \
-    \
+RUN \
+    docker-php-serversideup-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}"; \
+    docker-php-serversideup-dep-install-debian "${DEPENDENCY_PACKAGES_DEBIAN}"; \
+    # Install PHP Extension installer
+    docker-php-serversideup-install-php-ext-installer; \
     # Install default PHP extensions
-    install-php-extensions "${DEPENDENCY_PHP_EXTENSIONS}"
-
-# install composer from Composer's official Docker image
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-RUN docker-php-set-file-permissions --owner www-data:www-data --service cli
-
-WORKDIR ${APP_BASE_DIR}
+    install-php-extensions "${DEPENDENCY_PHP_EXTENSIONS}";
 
 USER www-data
-
-ENTRYPOINT ["docker-php-entrypoint"]
