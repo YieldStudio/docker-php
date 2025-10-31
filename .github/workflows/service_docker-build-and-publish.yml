@@ -37,7 +37,7 @@ on:
         description: 'Whether to push the images to the registry.'
       base-repository:
         type: string
-        default: 'php'
+        default: 'serversideup/php'
         description: 'The base repository to use for the Docker images.'
       artifact-name:
         type: string
