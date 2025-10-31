@@ -27,3 +27,5 @@ RUN \
     install-php-extensions "${DEPENDENCY_PHP_EXTENSIONS}";
 
 USER www-data
+
+ENTRYPOINT ["docker-php-serversideup-entrypoint"]
