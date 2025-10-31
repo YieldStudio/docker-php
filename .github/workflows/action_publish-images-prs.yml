@@ -41,6 +41,7 @@ jobs:
       php-versions-file: 'scripts/conf/sail-versions.yml'
       artifact-name: 'sail-versions.yml'
       release-type: testing
+      prepend-tag-to-php-version: true
       push-to-registry: >-
         ${{ 
           github.event_name == 'workflow_dispatch' ||
