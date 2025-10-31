@@ -45,5 +45,5 @@ yq -o=json "$PHP_VERSIONS_FILE" | jq -c '
       | select(is_supported($variation; $os))
       | {minor: $minor.minor, patch_version: $patch, base_os: $os.name, php_variation: $variation.name}
     ]
-  | { include: ( . | sort_by(.patch_version | version_weight) | reverse ) }
+  | { include: ( . | sort_by(.minor | version_weight) | reverse ) }
 '
