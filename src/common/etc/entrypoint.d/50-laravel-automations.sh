@@ -4,6 +4,7 @@ script_name="laravel-automations"
 # Global configurations
 : "${DISABLE_DEFAULT_CONFIG:=false}"
 : "${APP_BASE_DIR:=/var/www/html}"
+: "${OCTANE_SERVER:=off}"
 : "${AUTORUN_LIB_DIR:=/etc/entrypoint.d/lib}"
 
 # Set default values for Laravel automations
@@ -428,10 +429,10 @@ if laravel_is_installed; then
 
     echo "🤔 Checking for Laravel automations..."
     # If OCTANE_SERVER is set, run the Octane setup
-    if [ -n "$OCTANE_SERVER" ]; then
+    if [ -n "$OCTANE_SERVER" ] && [ "$OCTANE_SERVER" != "off" ]; then
         artisan_setup_octane
     fi
-    
+
     if [ "$AUTORUN_LARAVEL_STORAGE_RECREATE" = "true" ]; then
         artisan_storage_recreate
     fi
