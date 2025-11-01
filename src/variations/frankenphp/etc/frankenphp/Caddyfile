@@ -14,11 +14,7 @@
 	# Match php log levels to Caddy global log levels
 	import log-level/global/{$LOG_OUTPUT_LEVEL:info}.caddyfile
 
-	frankenphp {
-		import worker/{$OCTANE_SERVER:off}.caddyfile
-
-		{$FRANKENPHP_CONFIG}
-	}
+	import worker/{$OCTANE_SERVER:off}.caddyfile
 
 	servers {
 		# Trust Docker/private networks + loopback + Cloudflare ranges

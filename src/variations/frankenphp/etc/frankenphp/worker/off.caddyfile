@@ -1,1 +1,3 @@
-# Off mode worker configuration
+frankenphp {
+	{$FRANKENPHP_CONFIG}
+}

@@ -1,5 +1,8 @@
 # FrankenPHP worker configuration
-worker {
-	file {$CADDY_APP_PUBLIC_PATH:/var/www/html/public}/frankenphp-worker.php
-	{$FRANKENPHP_WORKER_CONFIG}
+frankenphp {
+	worker {
+		file {$CADDY_APP_PUBLIC_PATH:/var/www/html/public}/frankenphp-worker.php
+		{$FRANKENPHP_WORKER_CONFIG}
+	}
+	{$FRANKENPHP_CONFIG}
 }
