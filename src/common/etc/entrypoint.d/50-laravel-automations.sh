@@ -61,7 +61,7 @@ artisan_migrate() {
 
     echo "🚀 Clearing Laravel cache before attempting migrations..."
     php "$APP_BASE_DIR/artisan" config:clear
-    
+
     # Determine the migration command to use
     case "$AUTORUN_LARAVEL_MIGRATION_MODE" in
         default)
@@ -82,13 +82,13 @@ artisan_migrate() {
             echo "❌ $script_name: Isolated migrations are only supported in default mode."
             return 1
         fi
-        
+
         # Isolation requires Laravel 9.38.0+
         if ! laravel_version_is_at_least "9.38.0"; then
             echo "❌ $script_name: Isolated migrations require Laravel v9.38.0 or above. Detected version: $(get_laravel_version)"
             return 1
         fi
-        
+
         migrate_flags="$migrate_flags --isolated"
     fi
 
@@ -104,14 +104,14 @@ artisan_migrate() {
     if [ -n "$AUTORUN_LARAVEL_MIGRATION_DATABASE" ]; then
         databases=$(convert_comma_delimited_to_space_separated "$AUTORUN_LARAVEL_MIGRATION_DATABASE")
         database_list=$(echo "$databases" | tr ',' ' ')
-        
+
         for db in $database_list; do
             # Wait for this specific database to be ready
             if ! wait_for_database_connection "$db"; then
                 echo "❌ $script_name: Failed to connect to database: $db"
                 return 1
             fi
-            
+
             echo "🚀 Running migrations for database: $db"
             php "$APP_BASE_DIR/artisan" $migration_command --database=$db $migrate_flags
         done
@@ -121,7 +121,7 @@ artisan_migrate() {
             echo "❌ $script_name: Failed to connect to default database"
             return 1
         fi
-        
+
         # Run migration with default database connection
         php "$APP_BASE_DIR/artisan" $migration_command $migrate_flags
     fi
@@ -129,7 +129,7 @@ artisan_migrate() {
 
 artisan_setup_octane() {
     echo "🚀 Setup Laravel Octane: \"php artisan octane:install --server=$OCTANE_SERVER\"..."
-    if ! php "$APP_BASE_DIR/artisan" octane:install --server=$OCTANE_SERVER; then
+    if ! php "$APP_BASE_DIR/artisan" octane:install --server=$OCTANE_SERVER --quiet; then
         echo "❌ $script_name: Laravel Octane setup failed"
         return 1
     fi
@@ -138,12 +138,11 @@ artisan_setup_octane() {
 
 artisan_storage_recreate() {
     storage_paths='storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/testings storage/framework/views storage/logs'
-    for path in ${storage_paths}; do
-        $full_path="$APP_BASE_DIR/$path"
-        if [ ! -d "$full_path" ]; then
-            mkdir -p "$full_path"
-            echo "✅ Recreated [$path] directory."
-        fi
+    for path in $storage_paths; do
+        echo "📁 Recreating storage directory: $path"
+        mkdir -p "$APP_BASE_DIR/$path"
+        chown www-data:www-data "$APP_BASE_DIR/$path"
+        chmod 755 "$APP_BASE_DIR/$path"
     done
 }
 
@@ -162,7 +161,7 @@ artisan_storage_link() {
 
 artisan_optimize() {
     debug_log "Starting Laravel optimizations..."
-    
+
     # Determine which optimizations are requested
     all_opts_enabled="false"
     if [ "$AUTORUN_LARAVEL_OPTIMIZE" = "true" ] && \
@@ -172,7 +171,7 @@ artisan_optimize() {
        [ "$AUTORUN_LARAVEL_EVENT_CACHE" = "true" ]; then
         all_opts_enabled="true"
     fi
-    
+
     # Case 1: All optimizations enabled - use simple optimize command
     if [ "$all_opts_enabled" = "true" ]; then
         debug_log "All optimizations enabled, using 'php artisan optimize'"
@@ -183,20 +182,20 @@ artisan_optimize() {
         fi
         return 0
     fi
-    
+
     # Case 2: AUTORUN_LARAVEL_OPTIMIZE is true with selective optimizations (Laravel 11.38.0+)
     if [ "$AUTORUN_LARAVEL_OPTIMIZE" = "true" ]; then
         if laravel_version_is_at_least "11.38.0"; then
             debug_log "Using 'php artisan optimize --except' for selective optimizations"
             echo "🛠️ Preparing selective optimizations..."
             except=""
-            
+
             # Build except string for disabled optimizations
             [ "$AUTORUN_LARAVEL_CONFIG_CACHE" = "false" ] && except="${except:+${except},}config"
             [ "$AUTORUN_LARAVEL_ROUTE_CACHE" = "false" ] && except="${except:+${except},}routes"
             [ "$AUTORUN_LARAVEL_VIEW_CACHE" = "false" ] && except="${except:+${except},}views"
             [ "$AUTORUN_LARAVEL_EVENT_CACHE" = "false" ] && except="${except:+${except},}events"
-            
+
             echo "🚀 Running optimizations: \"php artisan optimize ${except:+--except=${except}}\"..."
             if ! php "$APP_BASE_DIR/artisan" optimize ${except:+--except=${except}}; then
                 echo "❌ $script_name: Laravel optimize failed"
@@ -208,13 +207,13 @@ artisan_optimize() {
             echo "ℹ️ Selective optimizations with 'php artisan optimize --except' require Laravel v11.38.0 or above, using individual commands instead..."
         fi
     fi
-    
+
     # Case 3: Run individual optimization commands
     # This runs when:
     # - AUTORUN_LARAVEL_OPTIMIZE is false (user wants granular control), OR
     # - AUTORUN_LARAVEL_OPTIMIZE is true but Laravel < 11.38.0 (fallback)
     debug_log "Running individual optimization commands"
-    
+
     if [ "$AUTORUN_LARAVEL_CONFIG_CACHE" = "true" ]; then
         echo "🚀 Caching config: \"php artisan config:cache\"..."
         if ! php "$APP_BASE_DIR/artisan" config:cache; then
@@ -246,7 +245,7 @@ artisan_optimize() {
             return 1
         fi
     fi
-    
+
     return 0
 }
 
@@ -265,17 +264,17 @@ get_laravel_version() {
     debug_log "Detecting Laravel version..."
     # Use 2>/dev/null to handle potential PHP warnings
     artisan_version_output=$(php "$APP_BASE_DIR/artisan" --version 2>/dev/null)
-    
+
     # Check if command was successful
     if [ $? -ne 0 ]; then
         echo "❌ $script_name: Failed to execute artisan command" >&2
         return 1
     fi
-    
+
     # Extract version number using sed (POSIX compliant)
     # Using a more strict pattern that matches "Laravel Framework X.Y.Z"
     laravel_version=$(echo "$artisan_version_output" | sed -e 's/^Laravel Framework \([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*$/\1/')
-    
+
     # Validate that we got a version number (POSIX compliant regex)
     if echo "$laravel_version" | grep '^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null 2>&1; then
         INSTALLED_LARAVEL_VERSION="$laravel_version"
@@ -356,7 +355,7 @@ wait_for_database_connection() {
     database_name="${1:-}"
     count=0
     timeout=$AUTORUN_LARAVEL_MIGRATION_TIMEOUT
-    
+
     # Determine display name based on whether a specific connection was provided
     if [ -z "$database_name" ]; then
         display_name="default database"
@@ -440,7 +439,7 @@ if laravel_is_installed; then
     if [ "$AUTORUN_LARAVEL_STORAGE_LINK" = "true" ]; then
         artisan_storage_link
     fi
-    
+
     if [ "$AUTORUN_LARAVEL_MIGRATION" = "true" ]; then
         artisan_migrate
     fi

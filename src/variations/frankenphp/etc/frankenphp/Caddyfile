@@ -88,6 +88,8 @@ fd00::/8 \
 
 	php_server {
 		{$CADDY_PHP_SERVER_OPTIONS}
+		# Required for the public/storage/ directory...
+        resolve_root_symlink
 	}
 	file_server
 
