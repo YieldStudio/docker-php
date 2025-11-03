@@ -1,7 +1,8 @@
 # FrankenPHP worker configuration
 frankenphp {
+	php_ini variables_order "EGPCS"
 	worker {
-		file {$CADDY_APP_PUBLIC_PATH:/var/www/html/public}/frankenphp-worker.php
+		file "{$CADDY_APP_PUBLIC_PATH:/var/www/html/public}/frankenphp-worker.php"
 		{$FRANKENPHP_WORKER_CONFIG}
 	}
 	{$FRANKENPHP_CONFIG}
