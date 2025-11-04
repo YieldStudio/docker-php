@@ -39,6 +39,9 @@ FROM common AS final
 
 ARG REPOSITORY_BUILD_VERSION='dev'
 
+ENV \
+    PHP_VARIABLES_ORDER="GPCS"
+
 LABEL org.opencontainers.image.title="yieldstudio/php (frankenphp)" \
     org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images and serversideup/php, yieldstudio/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \
     org.opencontainers.image.url="https://yieldstudio.github.io/docker-php/" \

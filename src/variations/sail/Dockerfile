@@ -27,6 +27,7 @@ ARG SOPS_VERSION="v3.10.2"
 ARG NODE_VERSION=24
 
 ENV AUTORUN_ENABLED=false \
+    PHP_VARIABLES_ORDER="GPCS" \
     PHP_OPCACHE_ENABLE=0 \
     XDEBUG_MODE="coverage,debug" \
     XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" \
