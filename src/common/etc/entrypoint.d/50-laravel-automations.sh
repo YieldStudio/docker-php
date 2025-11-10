@@ -141,8 +141,8 @@ artisan_storage_recreate() {
     for path in $storage_paths; do
         echo "📁 Recreating storage directory: $path"
         mkdir -p "$APP_BASE_DIR/$path"
-        chown www-data:www-data "$APP_BASE_DIR/$path"
-        chmod 755 "$APP_BASE_DIR/$path"
+        chown www-data:www-data "$APP_BASE_DIR/$path" 2>/dev/null || true
+        chmod 755 "$APP_BASE_DIR/$path" 2>/dev/null || true
     done
 }
 
@@ -427,17 +427,16 @@ if laravel_is_installed; then
     fi
 
     echo "🤔 Checking for Laravel automations..."
-    # If OCTANE_SERVER is set, run the Octane setup
-    if [ -n "$OCTANE_SERVER" ] && [ "$OCTANE_SERVER" != "off" ]; then
-        artisan_setup_octane
-    fi
-
     if [ "$AUTORUN_LARAVEL_STORAGE_RECREATE" = "true" ]; then
         artisan_storage_recreate
     fi
 
     if [ "$AUTORUN_LARAVEL_STORAGE_LINK" = "true" ]; then
         artisan_storage_link
+    fi
+
+    if [ -n "$OCTANE_SERVER" ] && [ "$OCTANE_SERVER" != "off" ]; then
+        artisan_setup_octane
     fi
 
     if [ "$AUTORUN_LARAVEL_MIGRATION" = "true" ]; then
