@@ -4,7 +4,7 @@ ARG PHP_VERSION='8.4'
 ARG PHP_VARIATION='frankenphp'
 ARG BASE_REPO='serversideup/php'
 ARG TAG_PREFIX=''
-ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-v4.0.0-beta2"
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-v4.0.0-beta3"
 
 ########################
 # Common
@@ -12,7 +12,7 @@ ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE
 FROM ${BASE_IMAGE} AS common
 
 ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full'
-ARG DEPENDENCY_PACKAGES_DEBIAN=''
+ARG DEPENDENCY_PACKAGES_DEBIAN='zip'
 ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif imagick opentelemetry soap sockets memcached'
 
 USER root
@@ -20,7 +20,6 @@ USER root
 COPY --chmod=755 src/common/ /
 
 COPY src/variations/frankenphp/etc/frankenphp/ /etc/frankenphp/
-COPY src/variations/frankenphp/etc/entrypoint.d/ /etc/entrypoint.d/
 
 RUN \
     docker-php-serversideup-dep-install-alpine "${DEPENDENCY_PACKAGES_ALPINE}"; \
