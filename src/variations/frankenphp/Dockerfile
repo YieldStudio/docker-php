@@ -14,7 +14,7 @@ FROM ${BASE_IMAGE} AS common
 
 ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full'
 ARG DEPENDENCY_PACKAGES_DEBIAN='zip'
-ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif imagick opentelemetry soap sockets memcached'
+ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif opentelemetry soap sockets memcached'
 
 USER root
 

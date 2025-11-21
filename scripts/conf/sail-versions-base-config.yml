@@ -10,21 +10,19 @@ php_versions:
           - name: bookworm
           - name: trixie
         patch_versions:
-          # - 8.3.6 # Pull latest from Official PHP source
+        # - 8.3.6 # Pull latest from Official PHP source
       - minor: "8.4"
         base_os:
           - name: bookworm
           - name: trixie
         patch_versions:
         #   - 8.4.1 # Pull latest from Official PHP source
-      # PHP 8.5-rc has a blocking bug in a dependency that is not yet fixed.
-      # 
-      # - minor: "8.5-rc"
-      #   base_os:
-      #     - name: bookworm
-      #     - name: trixie
-      #   patch_versions:
-      #     - 8.5-rc
+      - minor: "8.5"
+        base_os:
+          - name: bookworm
+          - name: trixie
+        patch_versions:
+        # - 8.5.0 # Pull latest from Official PHP source
 
 operating_systems:
   - family: alpine
