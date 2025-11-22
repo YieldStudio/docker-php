@@ -3,8 +3,7 @@ ARG BASE_OS_VERSION='trixie'
 ARG PHP_VERSION='8.5'
 ARG BASE_REPO='ghcr.io/yieldstudio/php'
 ARG TAG_PREFIX=''
-ARG IMAGE_VERSION='v4.1.0'
-ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-frankenphp-${BASE_OS_VERSION}-${IMAGE_VERSION}"
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-frankenphp-${BASE_OS_VERSION}"
 
 ########################
 # Common
