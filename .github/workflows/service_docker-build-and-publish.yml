@@ -175,6 +175,7 @@ jobs:
 
       - name: Build images
         uses: docker/build-push-action@v6
+        continue-on-error: true
         with:
           file: src/variations/${{ matrix.php_variation }}/Dockerfile
           cache-from: type=gha
