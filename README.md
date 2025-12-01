@@ -1,140 +1,215 @@
+# YieldStudio PHP Docker Images
+
 <p align="center">
-	<a href="https://github.com/YieldStudio/docker-php/actions/workflows/action_publish-images-production.yml"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/YieldStudio/docker-php/.github%2Fworkflows%2Faction_publish-images-production.yml"></a>
-	<a href="https://github.com/YieldStudio/docker-php/blob/main/LICENSE" target="_blank"><img src="https://badgen.net/github/license/YieldStudio/docker-php" alt="License"></a>
-  <br />
+    <a href="https://github.com/YieldStudio/docker-php/actions/workflows/action_publish-images-production.yml"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/YieldStudio/docker-php/.github%2Fworkflows%2Faction_publish-images-production.yml"></a>
+    <a href="https://github.com/YieldStudio/docker-php/blob/main/LICENSE" target="_blank"><img src="https://badgen.net/github/license/YieldStudio/docker-php" alt="License"></a>
 </p>
 
 ## Introduction
-`yieldstudio/php` is an optimized set of Docker Images for running PHP applications in production. Everything is designed around improving the developer experience with PHP and Docker. Gone are the days of configuring each environment differently, and gone are the days of trying to figure out why your code works in one environment and not the other.
 
-These images are highly optimized to run modern PHP applications, no matter where you want your application to run.
+`yieldstudio/php` est un ensemble optimisé d'images Docker pour exécuter des applications PHP en production. Tout est conçu autour de l'amélioration de l'expérience développeur avec PHP et Docker. Finis les jours de configuration différente pour chaque environnement, et finis les jours où vous essayez de comprendre pourquoi votre code fonctionne dans un environnement et pas dans un autre.
 
-Experience the ***true difference*** of using these images vs the other options out there.
+Ces images sont hautement optimisées pour exécuter des applications PHP modernes, peu importe où vous souhaitez que votre application s'exécute.
 
-[Read more about the key differences with these images →](https://serversideup.net/open-source/docker-php/docs/getting-started/these-images-vs-others)
+Basé sur [serversideup/php](https://serversideup.net/open-source/docker-php/), ces images incluent des extensions PHP pré-configurées et des paramètres pour des performances et une sécurité améliorées. Optimisé pour Laravel et WordPress.
 
-<details open>
-<summary>
- Features
-</summary> <br />
+## Fonctionnalités
 
-|<picture><img width="100%" alt="Production-Ready" src="https://serversideup.net/wp-content/uploads/2023/08/production-ready.png"></picture>|<picture><img width="100%" alt="Native Health Checks" src="https://serversideup.net/wp-content/uploads/2023/08/native-health-checks.png"></picture>|<picture><img width="100%" alt="High Performance" src="https://serversideup.net/wp-content/uploads/2023/11/high-performance.png"></picture>|
-|:---:|:---:|:---:|
-|<picture><img width="100%" alt="Customizable and Flexible" src="https://serversideup.net/wp-content/uploads/2023/08/customizable-flexible.png"></picture>|<picture><img width="100%" alt="Native CloudFlare Support" src="https://serversideup.net/wp-content/uploads/2023/11/cloudflare.png"></picture>|<picture><img width="100%" alt="Base on Official PHP" src="https://serversideup.net/wp-content/uploads/2023/11/official-php.png"></picture>|
-|<picture><img width="100%" alt="NGINX Unit" src="https://serversideup.net/wp-content/uploads/2023/11/nginx-unit.png"></picture>|<picture><img width="100%" alt="Unified Logging" src="https://serversideup.net/wp-content/uploads/2023/11/unified-logging.png"></picture>|<picture><img width="100%" alt="FPM + S6 Overlay" src="https://serversideup.net/wp-content/uploads/2023/11/fpm-s6.png"></picture>|
+- ✅ Images basées sur PHP officiel
+- ✅ Support multi-architecture (AMD64 & ARM64)
+- ✅ Validation automatique des versions PHP sur DockerHub
+- ✅ Support Debian (Bookworm, Trixie) et Alpine
+- ✅ Variations disponibles : CLI, FrankenPHP, Sail
+- ✅ Extensions PHP pré-installées (intl, gd, bcmath, exif, soap, etc.)
+- ✅ Automations Laravel intégrées
+- ✅ Support natif d'Octane et FrankenPHP
+- ✅ Health checks intégrés
 
-</details>
+## Utilisation
 
-## Professionally Supported
-Are you looking for help on integreating Docker with your PHP application? We have multiple options to help your team out:
+Utilisez simplement ce pattern de nom d'image dans vos projets :
 
-- [Get Managed Hosting](https://serversideup.net/hire-us/): CI/CD design and engineering, managed hosting, guaranteed uptime, any host, any server.
-- [Get Professional Help](https://schedule.serversideup.net/team/serversideup/quick-chat-with-jay): Get video + screen-sharing help directly from the core contributors.
-- [Get a Full-Stack Development Team](https://serversideup.net/hire-us/): We can build your app from the ground up, or help you with your existing codebase.
-
-## Usage
-This repository creates a number of Docker image variations, allowing you to choose exactly what you need.
-
-Simply use this image name pattern in any of your projects:
 ```sh
-serversideup/php:{{version}}-{{variation-name}}
-```
-For example... If I wanted to run **PHP 8.2** with **FPM + NGINX**, I would use this image:
-```sh
-serversideup/php:8.2-fpm-nginx
+ghcr.io/yieldstudio/php:{{version}}-{{variation-name}}
 ```
 
-> [!NOTE]  
-> All our images are available on [**Docker Hub**](https://hub.docker.com/r/serversideup/php/) and [**GitHub Packages**](https://github.com/serversideup/docker-php/pkgs/container/php). 🥳
+Par exemple, pour PHP 8.3 avec FrankenPHP :
 
-| ⚙️ Variation   | 🚀 Version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| -------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cli            | **Debian Based**<br>[![serversideup/php:8.4-cli](https://img.shields.io/docker/image-size/serversideup/php/8.4-cli?label=serversideup%2Fphp%3A8.4-cli)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-cli&page=1&ordering=-name)<br>[![serversideup/php:8.3-cli](https://img.shields.io/docker/image-size/serversideup/php/8.3-cli?label=serversideup%2Fphp%3A8.3-cli)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-cli&page=1&ordering=-name)<br>[![serversideup/php:8.2-cli](https://img.shields.io/docker/image-size/serversideup/php/8.2-cli?label=serversideup%2Fphp%3A8.2-cli)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-cli&page=1&ordering=-name)<br>[![serversideup/php:8.1-cli](https://img.shields.io/docker/image-size/serversideup/php/8.1-cli?label=serversideup%2Fphp%3A8.1-cli)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-cli&page=1&ordering=-name)<br>[![serversideup/php:8.0-cli](https://img.shields.io/docker/image-size/serversideup/php/8.0-cli?label=serversideup%2Fphp%3A8.0-cli)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-cli&page=1&ordering=-name)<br>[![serversideup/php:7.4-cli](https://img.shields.io/docker/image-size/serversideup/php/7.4-cli?label=serversideup%2Fphp%3A7.4-cli)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-cli&page=1&ordering=-name)<br>**Alpine Based**<br>[![serversideup/php:8.4-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.4-cli-alpine?label=serversideup%2Fphp%3A8.4-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-cli-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.3-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.3-cli-alpine?label=serversideup%2Fphp%3A8.3-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-cli&page=1&ordering=-name)<br>[![serversideup/php:8.2-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.2-cli-alpine?label=serversideup%2Fphp%3A8.2-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-cli-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.1-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.1-cli-alpine?label=serversideup%2Fphp%3A8.1-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-cli-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.0-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.0-cli-alpine?label=serversideup%2Fphp%3A8.0-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-cli-alpine&page=1&ordering=-name)<br>[![serversideup/php:7.4-cli-alpine](https://img.shields.io/docker/image-size/serversideup/php/7.4-cli-alpine?label=serversideup%2Fphp%3A7.4-cli-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-cli-alpine&page=1&ordering=-name)                                                                                                                                                                                                                                                                                                                             |
-| fpm            | **Debian Based**<br>[![serversideup/php:8.4-fpm](https://img.shields.io/docker/image-size/serversideup/php/8.4-fpm?label=serversideup%2Fphp%3A8.4-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-fpm&page=1&ordering=-name)<br>[![serversideup/php:8.3-fpm](https://img.shields.io/docker/image-size/serversideup/php/8.3-fpm?label=serversideup%2Fphp%3A8.3-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-fpm&page=1&ordering=-name)<br>[![serversideup/php:8.2-fpm](https://img.shields.io/docker/image-size/serversideup/php/8.2-fpm?label=serversideup%2Fphp%3A8.2-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-fpm&page=1&ordering=-name)<br>[![serversideup/php:8.1-fpm](https://img.shields.io/docker/image-size/serversideup/php/8.1-fpm?label=serversideup%2Fphp%3A8.1-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-fpm&page=1&ordering=-name)<br>[![serversideup/php:8.0-fpm](https://img.shields.io/docker/image-size/serversideup/php/8.0-fpm?label=serversideup%2Fphp%3A8.0-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-fpm&page=1&ordering=-name)<br>[![serversideup/php:7.4-fpm](https://img.shields.io/docker/image-size/serversideup/php/7.4-fpm?label=serversideup%2Fphp%3A7.4-fpm)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-fpm&page=1&ordering=-name)<br>**Alpine Based**<br>[![serversideup/php:8.4-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.4-fpm-alpine?label=serversideup%2Fphp%3A8.4-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-fpm-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.3-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.3-fpm-alpine?label=serversideup%2Fphp%3A8.3-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-fpm-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.2-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.2-fpm-alpine?label=serversideup%2Fphp%3A8.2-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-fpm-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.1-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.1-fpm-alpine?label=serversideup%2Fphp%3A8.1-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-fpm-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.0-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.0-fpm-alpine?label=serversideup%2Fphp%3A8.0-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-fpm-alpine&page=1&ordering=-name)<br>[![serversideup/php:7.4-fpm-alpine](https://img.shields.io/docker/image-size/serversideup/php/7.4-fpm-alpine?label=serversideup%2Fphp%3A7.4-fpm-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-fpm-alpine&page=1&ordering=-name)                                                                                                                                                                                                                                                                                                 |
-| fpm-apache    | **Debian Based**<br>[![serversideup/php:8.4-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/8.4-fpm-apache?label=serversideup%2Fphp%3A8.4-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-fpm-apache&page=1&ordering=-name)<br>[![serversideup/php:8.3-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/8.3-fpm-apache?label=serversideup%2Fphp%3A8.3-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-fpm-apache&page=1&ordering=-name)<br>[![serversideup/php:8.2-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/8.2-fpm-apache?label=serversideup%2Fphp%3A8.2-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-fpm-apache&page=1&ordering=-name)<br>[![serversideup/php:8.1-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/8.1-fpm-apache?label=serversideup%2Fphp%3A8.1-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-fpm-apache&page=1&ordering=-name)<br>[![serversideup/php:8.0-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/8.0-fpm-apache?label=serversideup%2Fphp%3A8.0-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-fpm-apache&page=1&ordering=-name)<br>[![serversideup/php:7.4-fpm-apache](https://img.shields.io/docker/image-size/serversideup/php/7.4-fpm-apache?label=serversideup%2Fphp%3A7.4-fpm-apache)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-fpm-apache&page=1&ordering=-name)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| fpm-nginx     | **Debian Based**<br>[![serversideup/php:8.4-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/8.4-fpm-nginx?label=serversideup%2Fphp%3A8.4-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-fpm-nginx&page=1&ordering=-name)<br>[![serversideup/php:8.3-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/8.3-fpm-nginx?label=serversideup%2Fphp%3A8.3-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-fpm-nginx&page=1&ordering=-name)<br>[![serversideup/php:8.2-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/8.2-fpm-nginx?label=serversideup%2Fphp%3A8.2-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-fpm-nginx&page=1&ordering=-name)<br>[![serversideup/php:8.1-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/8.1-fpm-nginx?label=serversideup%2Fphp%3A8.1-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-fpm-nginx&page=1&ordering=-name)<br>[![serversideup/php:8.0-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/8.0-fpm-nginx?label=serversideup%2Fphp%3A8.0-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-fpm-nginx&page=1&ordering=-name)<br>[![serversideup/php:7.4-fpm-nginx](https://img.shields.io/docker/image-size/serversideup/php/7.4-fpm-nginx?label=serversideup%2Fphp%3A7.4-fpm-nginx)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-fpm-nginx&page=1&ordering=-name)<br>**Alpine Based**<br>[![serversideup/php:8.4-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.4-fpm-nginx-alpine?label=serversideup%2Fphp%3A8.4-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-fpm-nginx-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.3-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.3-fpm-nginx-alpine?label=serversideup%2Fphp%3A8.3-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-fpm-nginx-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.2-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.2-fpm-nginx-alpine?label=serversideup%2Fphp%3A8.2-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-fpm-nginx-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.1-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.1-fpm-nginx-alpine?label=serversideup%2Fphp%3A8.1-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-fpm-nginx-alpine&page=1&ordering=-name)<br>[![serversideup/php:8.0-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/8.0-fpm-nginx-alpine?label=serversideup%2Fphp%3A8.0-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-fpm-nginx-alpine&page=1&ordering=-name)<br>[![serversideup/php:7.4-fpm-nginx-alpine](https://img.shields.io/docker/image-size/serversideup/php/7.4-fpm-nginx-alpine?label=serversideup%2Fphp%3A7.4-fpm-nginx-alpine)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-fpm-nginx-alpine&page=1&ordering=-name) |
-| unit          | **Debian Based**<br>[![serversideup/php:8.4-unit](https://img.shields.io/docker/image-size/serversideup/php/8.4-unit?label=serversideup%2Fphp%3A8.4-unit)](https://hub.docker.com/r/serversideup/php/tags?name=8.4-unit&page=1&ordering=-name)<br>[![serversideup/php:8.3-unit](https://img.shields.io/docker/image-size/serversideup/php/8.3-unit?label=serversideup%2Fphp%3A8.3-unit)](https://hub.docker.com/r/serversideup/php/tags?name=8.3-unit&page=1&ordering=-name)<br>[![serversideup/php:8.2-unit](https://img.shields.io/docker/image-size/serversideup/php/8.2-unit?label=serversideup%2Fphp%3A8.2-unit)](https://hub.docker.com/r/serversideup/php/tags?name=8.2-unit&page=1&ordering=-name)<br>[![serversideup/php:8.1-unit](https://img.shields.io/docker/image-size/serversideup/php/8.1-unit?label=serversideup%2Fphp%3A8.1-unit)](https://hub.docker.com/r/serversideup/php/tags?name=8.1-unit&page=1&ordering=-name)<br>[![serversideup/php:8.0-unit](https://img.shields.io/docker/image-size/serversideup/php/8.0-unit?label=serversideup%2Fphp%3A8.0-unit)](https://hub.docker.com/r/serversideup/php/tags?name=8.0-unit&page=1&ordering=-name)<br>[![serversideup/php:7.4-unit](https://img.shields.io/docker/image-size/serversideup/php/7.4-unit?label=serversideup%2Fphp%3A7.4-unit)](https://hub.docker.com/r/serversideup/php/tags?name=7.4-unit&page=1&ordering=-name)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+```sh
+ghcr.io/yieldstudio/php:8.3-frankenphp
+```
 
-## Resources
-- **[Website](https://serversideup.net/open-source/docker-php/)** overview of the product.
-- **[Docs](https://serversideup.net/open-source/docker-php/docs)** for a deep-dive on how to use the product.
-- **[Discord](https://serversideup.net/discord)** for friendly support from the community and the team.
-- **[GitHub](https://github.com/serversideup/docker-php)** for source code, bug reports, and project management.
-- **[Get Professional Help](https://serversideup.net/professional-support)** - Get video + screen-sharing help directly from the core contributors.
+### Variations disponibles
 
-## Contributing
-As an open-source project, we strive for transparency and collaboration in our development process. We greatly appreciate any contributions members of our community can provide. Whether you're fixing bugs, proposing features, improving documentation, or spreading awareness - your involvement strengthens the project. Please review our [contribution guidelines](https://serversideup.net/open-source/docker-php/docs/getting-started/contributing) and [code of conduct](./.github/code_of_conduct.md) to understand how we work together respectfully.
+| Variation     | Description                                    | Base OS              |
+|---------------|------------------------------------------------|----------------------|
+| `cli`         | PHP CLI de base avec extensions essentielles  | Debian (Bookworm)    |
+| `frankenphp`  | Serveur FrankenPHP avec support HTTP/3         | Debian (Trixie)      |
+| `sail`        | Environnement de développement Laravel Sail    | Debian (Trixie)      |
 
-- **Bug Report**: If you're experiencing an issue while using these images, please [create an issue](https://github.com/serversideup/docker-php/issues/new/choose).
-- **Feature Request**: Make this project better by [submitting a feature request](https://github.com/serversideup/docker-php/discussions/66).
-- **Documentation**: Improve our documentation by [submitting a documentation change](./docs/README.md).
-- **Community Support**: Help others on [GitHub Discussions](https://github.com/serversideup/docker-php/discussions) or [Discord](https://serversideup.net/discord).
-- **Security Report**: Report critical security issues via [our responsible disclosure policy](https://www.notion.so/Responsible-Disclosure-Policy-421a6a3be1714d388ebbadba7eebbdc8).
+### Versions PHP supportées
 
-Need help getting started? Join our Discord community and we'll help you out!
+- PHP 8.5
+- PHP 8.4
+- PHP 8.3
+- PHP 8.2
 
-<a href="https://serversideup.net/discord"><img src="https://serversideup.net/wp-content/themes/serversideup/images/open-source/join-discord.svg" title="Join Discord"></a>
+## Configuration
 
-## Our Sponsors
-All of our software is free an open to the world. None of this can be brought to you without the financial backing of our sponsors.
+### Variables d'environnement Laravel
 
-<p align="center"><a href="https://github.com/sponsors/serversideup"><img src="https://521public.s3.amazonaws.com/serversideup/sponsors/sponsor-box.png" alt="Sponsors"></a></p>
+Les images incluent des automations Laravel configurables via des variables d'environnement :
 
-### Black Level Sponsors
-<a href="https://sevalla.com"><img src="https://serversideup.net/wp-content/uploads/2024/10/sponsor-image.png" alt="Sevalla" width="546px"></a>
+#### Automations générales
+- `AUTORUN_ENABLED` (default: `false`) - Active les automations Laravel
+- `AUTORUN_DEBUG` (default: `false`) - Active les logs de débogage
 
-#### Bronze Sponsors
-<!-- bronze -->No bronze sponsors yet. <a href="https://github.com/sponsors/serversideup">Become a sponsor →</a><!-- bronze -->
+#### Storage
+- `AUTORUN_LARAVEL_STORAGE_RECREATE` (default: `true`) - Recrée les dossiers de storage
+- `AUTORUN_LARAVEL_STORAGE_LINK` (default: `true`) - Crée le lien symbolique de storage
 
-#### Special Infrastructure Sponsors
-This project takes an incredible amount of computing power to build and maintain over 8,000 different docker image tags. We're extremely grateful for the following sponsors who help bring the power to ship more PHP.
+#### Optimisations
+- `AUTORUN_LARAVEL_OPTIMIZE` (default: `true`) - Exécute `php artisan optimize`
+- `AUTORUN_LARAVEL_CONFIG_CACHE` (default: `true`) - Cache la configuration
+- `AUTORUN_LARAVEL_ROUTE_CACHE` (default: `true`) - Cache les routes
+- `AUTORUN_LARAVEL_VIEW_CACHE` (default: `true`) - Cache les vues
+- `AUTORUN_LARAVEL_EVENT_CACHE` (default: `true`) - Cache les événements
 
-<a href="https://depot.dev/"><img src="https://serversideup.net/sponsors/depot.png" alt="Depot" width="250px"></a>&nbsp;&nbsp;<a href="https://hub.docker.com/u/serversideup"><img src="https://serversideup.net/sponsors/docker.png" alt="Docker" width="250px"></a>
+#### Migrations
+- `AUTORUN_LARAVEL_MIGRATION` (default: `true`) - Exécute les migrations
+- `AUTORUN_LARAVEL_MIGRATION_DATABASE` - Base(s) de données spécifique(s)
+- `AUTORUN_LARAVEL_MIGRATION_FORCE` (default: `true`) - Force les migrations
+- `AUTORUN_LARAVEL_MIGRATION_TIMEOUT` (default: `30`) - Timeout de connexion DB
 
-#### Individual Supporters
-<!-- supporters --><a href="https://github.com/GeekDougle"><img src="https://github.com/GeekDougle.png" width="40px" alt="GeekDougle" /></a>&nbsp;&nbsp;<a href="https://github.com/aagjalpankaj"><img src="https://github.com/aagjalpankaj.png" width="40px" alt="aagjalpankaj" /></a>&nbsp;&nbsp;<!-- supporters -->
+### Variables d'environnement PHP
 
-#### Special thanks
-We'd like to specifically thank a few folks for taking the time for being a sound board that deeply influenced the direction of this project.
+- `PHP_OPCACHE_ENABLE` (default: `1`) - Active OPCache
+- `PHP_VARIABLES_ORDER` (default: `"GPCS"`) - Ordre des variables PHP
+- `PHP_MEMORY_LIMIT` - Limite mémoire PHP
+- `PHP_UPLOAD_MAX_FILESIZE` - Taille max d'upload
 
-Please check out their work:
-- [Chris Fidao](https://x.com/fideloper)
-- [Joel Clermont](https://x.com/jclermont)
-- [Patricio](https://x.com/PatricioOnCode)
+## Développement local
 
-## About Us
-We're [Dan](https://x.com/danpastori) and [Jay](https://x.com/jaydrogers) - a two person team with a passion for open source products. We created [Server Side Up](https://serversideup.net) to help share what we learn.
+### Construire une image
 
-<div align="center">
+```bash
+./scripts/dev.sh \
+  --variation cli \
+  --version 8.3 \
+  --os bookworm
+```
 
-| <div align="center">Dan Pastori</div>                  | <div align="center">Jay Rogers</div>                                 |
-| ----------------------------- | ------------------------------------------ |
-| <div align="center"><a href="https://x.com/danpastori"><img src="https://serversideup.net/wp-content/uploads/2023/08/dan.jpg" title="Dan Pastori" width="150px"></a><br /><a href="https://x.com/danpastori"><img src="https://serversideup.net/wp-content/themes/serversideup/images/open-source/twitter.svg" title="Twitter" width="24px"></a><a href="https://github.com/danpastori"><img src="https://serversideup.net/wp-content/themes/serversideup/images/open-source/github.svg" title="GitHub" width="24px"></a></div>                        | <div align="center"><a href="https://x.com/jaydrogers"><img src="https://serversideup.net/wp-content/uploads/2023/08/jay.jpg" title="Jay Rogers" width="150px"></a><br /><a href="https://x.com/jaydrogers"><img src="https://serversideup.net/wp-content/themes/serversideup/images/open-source/twitter.svg" title="Twitter" width="24px"></a><a href="https://github.com/jaydrogers"><img src="https://serversideup.net/wp-content/themes/serversideup/images/open-source/github.svg" title="GitHub" width="24px"></a></div>                                       |
+### Options disponibles
 
-</div>
+```bash
+--variation <variation>   # Variation PHP (cli, frankenphp, sail)
+--version <version>       # Version PHP (8.2, 8.3, 8.4, 8.5)
+--os <os>                 # OS de base (bookworm, trixie, alpine)
+--prefix <prefix>         # Préfixe pour le tag Docker
+--registry <registry>     # Registry personnalisé
+--platform <platform>     # Plateforme (linux/amd64, linux/arm64)
+--push                    # Push l'image vers le registry
+```
 
-### Find us at:
+## Scripts de build
 
-* **📖 [Blog](https://serversideup.net)** - Get the latest guides and free courses on all things web/mobile development.
-* **🙋 [Community](https://community.serversideup.net)** - Get friendly help from our community members.
-* **🤵‍♂️ [Get Professional Help](https://serversideup.net/professional-support)** - Get video + screen-sharing support from the core contributors.
-* **💻 [GitHub](https://github.com/serversideup)** - Check out our other open source projects.
-* **📫 [Newsletter](https://serversideup.net/subscribe)** - Skip the algorithms and get quality content right to your inbox.
-* **🐥 [Twitter](https://x.com/serversideup)** - You can also follow [Dan](https://x.com/danpastori) and [Jay](https://x.com/jaydrogers).
-* **❤️ [Sponsor Us](https://github.com/sponsors/serversideup)** - Please consider sponsoring us so we can create more helpful resources.
+### Récupération des versions PHP
 
-## Our products
-If you appreciate this project, be sure to check out our other projects.
+Le script [`scripts/get-php-versions.sh`](scripts/get-php-versions.sh) récupère les dernières versions PHP depuis php.net et valide leur disponibilité sur DockerHub :
 
-### 📚 Books
-- **[The Ultimate Guide to Building APIs & SPAs](https://serversideup.net/ultimate-guide-to-building-apis-and-spas-with-laravel-and-nuxt3/)**: Build web & mobile apps from the same codebase.
-- **[Building Multi-Platform Browser Extensions](https://serversideup.net/building-multi-platform-browser-extensions/)**: Ship extensions to all browsers from the same codebase.
+```bash
+./scripts/get-php-versions.sh [--skip-download] [--skip-dockerhub-validation]
+```
 
-### 🛠️ Software-as-a-Service
-- **[Bugflow](https://bugflow.io/)**: Get visual bug reports directly in GitHub, GitLab, and more.
-- **[SelfHost Pro](https://selfhostpro.com/)**: Connect Stripe or Lemonsqueezy to a private docker registry for self-hosted apps.
+Fonctionnalités :
+- ✅ Validation automatique sur DockerHub
+- ✅ Fallback vers versions antérieures si indisponible
+- ✅ Annotations GitHub Actions pour warnings/erreurs
+- ✅ Génération de [`scripts/conf/php-versions.yml`](scripts/conf/php-versions.yml)
 
-### 🌍 Open Source
-- **[AmplitudeJS](https://521dimensions.com/open-source/amplitudejs)**: Open-source HTML5 & JavaScript Web Audio Library.
-- **[Spin](https://serversideup.net/open-source/spin/)**: Laravel Sail alternative for running Docker from development → production.
-- **[Financial Freedom](https://github.com/serversideup/financial-freedom)**: Open source alternative to Mint, YNAB, & Monarch Money.
+### Assemblage des tags Docker
+
+Le script [`scripts/assemble-docker-tags.sh`](scripts/assemble-docker-tags.sh) gère la logique avancée des tags Docker :
+
+```bash
+./scripts/assemble-docker-tags.sh \
+  --variation <variation> \
+  --os <os> \
+  --patch-version <version> \
+  [--stable-release] \
+  [--github-release-tag <tag>]
+```
+
+Logique des tags :
+- Tags patch : `8.3.1-cli-bookworm`
+- Tags minor : `8.3-cli` (si dernière version patch)
+- Tags major : `8-cli` (si dernière version minor)
+- Tags `latest` : version stable la plus récente
+- Support RC avec tags dédiés
+
+### Génération de la matrice CI/CD
+
+Le script [`scripts/generate-matrix.sh`](scripts/generate-matrix.sh) génère la matrice de build GitHub Actions :
+
+```bash
+./scripts/generate-matrix.sh [path/to/php-versions.yml]
+```
+
+Génère un JSON pour GitHub Actions avec toutes les combinaisons :
+- Versions PHP × Variations × OS supportés
+- Filtrage des versions exclues
+- Tri par version (plus récentes en premier)
+
+## Structure du projet
+
+```
+.
+├── scripts/              # Scripts de build et CI/CD
+│   ├── assemble-docker-tags.sh
+│   ├── dev.sh
+│   ├── generate-matrix.sh
+│   ├── get-php-versions.sh
+│   └── conf/            # Configuration PHP versions
+├── src/
+│   ├── common/          # Fichiers communs à toutes les variations
+│   │   ├── etc/         # Scripts entrypoint et configuration
+│   │   └── usr/         # Binaires personnalisés
+│   └── variations/      # Dockerfiles par variation
+│       ├── cli/
+│       ├── frankenphp/
+│       └── sail/
+└── .github/
+    └── workflows/       # Workflows CI/CD
+```
+
+## Contribution
+
+Nous accueillons les contributions ! Consultez notre [guide de contribution](.github/code_of_conduct.md) pour commencer.
+
+### Rapporter des bugs
+
+Si vous rencontrez un problème, veuillez [créer une issue](https://github.com/YieldStudio/docker-php/issues/new/choose).
+
+### Proposer des fonctionnalités
+
+Améliorez ce projet en [soumettant une demande de fonctionnalité](https://github.com/YieldStudio/docker-php/discussions).
+
+## Ressources
+
+- **[Documentation serversideup/php](https://serversideup.net/open-source/docker-php/docs)** - Documentation complète du projet parent
+- **[GitHub](https://github.com/YieldStudio/docker-php)** - Code source et gestion du projet
+- **[GitHub Packages](https://github.com/YieldStudio/docker-php/pkgs/container/php)** - Registry des images
+
+## Crédits
+
+Ce projet est basé sur [serversideup/php](https://github.com/serversideup/docker-php) par [Server Side Up](https://serversideup.net).
+
+Merci à toute l'équipe de Server Side Up pour leur excellent travail sur les images PHP Docker de base.
+
+## Licence
+
+Ce projet est sous licence [GPL-3.0-or-later](LICENSE).
+
+---
+
+Maintenu par [YieldStudio](https://yieldstudio.fr) | Basé sur [serversideup/php](https://serversideup.net/open-source/docker-php/)
