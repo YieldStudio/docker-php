@@ -14,7 +14,7 @@ FROM ${BASE_IMAGE} AS common
 
 ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full sqlite ffmpeg'
 ARG DEPENDENCY_PACKAGES_DEBIAN='sqlite3 ffmpeg'
-ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif opentelemetry soap sockets memcached sqlite3 ffmpeg'
+ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif opentelemetry soap sockets memcached'
 
 USER root
 
