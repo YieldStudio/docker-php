@@ -12,9 +12,9 @@ ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE
 ########################
 FROM ${BASE_IMAGE} AS common
 
-ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full'
-ARG DEPENDENCY_PACKAGES_DEBIAN='zip'
-ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif opentelemetry soap sockets memcached'
+ARG DEPENDENCY_PACKAGES_ALPINE='icu-data-full sqlite ffmpeg'
+ARG DEPENDENCY_PACKAGES_DEBIAN='sqlite3 ffmpeg'
+ARG DEPENDENCY_PHP_EXTENSIONS='xml intl gd bcmath exif opentelemetry soap sockets memcached sqlite3 ffmpeg'
 
 USER root
 
