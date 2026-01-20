@@ -1,8 +1,10 @@
-# FrankenPHP worker configuration
 frankenphp {
 	php_ini variables_order "EGPCS"
+    num_threads {$FRANKENPHP_THREADS:8}
+    max_threads {$FRANKENPHP_MAX_THREADS:32}
 	worker {
 		file "{$CADDY_APP_PUBLIC_PATH:/var/www/html/public}/frankenphp-worker.php"
+        num {$FRANKENPHP_WORKER_THREADS:4}
 		{$FRANKENPHP_WORKER_CONFIG}
 	}
 	{$FRANKENPHP_CONFIG}

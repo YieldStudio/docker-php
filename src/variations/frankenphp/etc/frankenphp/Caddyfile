@@ -72,7 +72,18 @@ fd00::/8 \
 (php-app-common) {
 	root * {$CADDY_APP_PUBLIC_PATH:/var/www/html/public}
 
-	encode zstd br gzip
+	encode {
+		zstd
+		br
+		gzip
+		minimum_length 512
+		match {
+			header Content-Type text/*
+			header Content-Type application/json*
+			header Content-Type application/javascript*
+			header Content-Type application/xml*
+		}
+	}
 
 	# Match php log levels to Caddy address log levels
 	import log-level/address/{$LOG_OUTPUT_LEVEL:info}.caddyfile
@@ -93,10 +104,13 @@ fd00::/8 \
 	php_server {
 		{$CADDY_PHP_SERVER_OPTIONS}
 	}
-	file_server
+
+	file_server {
+		precompressed br gzip
+	}
 
 	import performance
-	import security 
+	import security
 
 	{$CADDY_SERVER_EXTRA_DIRECTIVES}
 }
@@ -105,6 +119,13 @@ fd00::/8 \
 	# Favicon/robots: skip noisy logs
 	@meta path /favicon.ico /robots.txt
 	log_skip @meta
+
+	# Build assets: ultra-long cache + precompressed
+	@build {
+		path /build/*
+	}
+	header @build Cache-Control "public, immutable, max-age=31536000"
+	header @build X-Content-Type-Options "nosniff"
 
 	# Static assets (long cache)
 	@static {
@@ -127,7 +148,7 @@ fd00::/8 \
 
 (security) {
 	# Reject dot files and certain file extensions
-	@rejected path *.bak *.conf *.dist *.fla *.ini *.inc *.inci *.log *.orig *.psd *.sh *.sql *.swo *.swp *.swop */.*
+	@rejected path *.bak *.conf *.dist *.fla *.ini *.inc *.inci *.log *.orig *.psd *.sh *.sql *.swo *.swp *.swop
 
 	# Return 403 Forbidden for rejected files
 	respond @rejected 403

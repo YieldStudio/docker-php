@@ -40,7 +40,18 @@ FROM common AS final
 ARG REPOSITORY_BUILD_VERSION='dev'
 
 ENV \
-    PHP_VARIABLES_ORDER="GPCS"
+    PHP_VARIABLES_ORDER="GPCS" \
+    PHP_OPCACHE_PRELOAD="" \
+    PHP_OPCACHE_PRELOAD_USER="www-data" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="32531" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="256" \
+    PHP_REALPATH_CACHE_SIZE="4096K" \
+    PHP_REALPATH_CACHE_TTL="600" \
+    PHP_OPCACHE_JIT="off" \
+    PHP_OPCACHE_JIT_BUFFER_SIZE="64M" \
+    FRANKENPHP_THREADS=8 \
+    FRANKENPHP_MAX_THREADS=32 \
+    FRANKENPHP_WORKER_THREADS=4
 
 LABEL org.opencontainers.image.title="yieldstudio/php (frankenphp)" \
     org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images and serversideup/php, yieldstudio/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \

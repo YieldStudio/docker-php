@@ -1,3 +1,5 @@
 frankenphp {
+    num_threads {$FRANKENPHP_THREADS:8}
+    max_threads {$FRANKENPHP_MAX_THREADS:32}
 	{$FRANKENPHP_CONFIG}
 }
