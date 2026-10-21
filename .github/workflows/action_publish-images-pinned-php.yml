@@ -1,0 +1,133 @@
+name: Docker Publish (Pinned PHP Images)
+
+# Publie ghcr.io/yieldstudio/php:<patch>-frankenphp-<os> (ex. 8.4.27-frankenphp-trixie)
+# sans attendre une release serversideup : l'image serversideup est reconstruite depuis son
+# code source (ref fixée) sur l'image PHP officielle de la version demandée, puis notre
+# variation frankenphp est construite par-dessus.
+#
+# Seuls des tags de version complète sont publiés : les tags 8.4-… restent gérés par
+# "Docker Publish (Production Images)". Les apps choisissent la version via PHP_BASE_VERSION.
+
+on:
+  workflow_dispatch:
+    inputs:
+      php-versions:
+        type: string
+        required: true
+        default: '["8.4.27", "8.3.36"]'
+        description: 'Versions PHP complètes (liste JSON). Elles doivent exister sur Docker Hub en php:<version>-zts-<os>.'
+      base-os:
+        type: string
+        required: true
+        default: 'trixie'
+        description: 'OS de base (trixie, bookworm, alpine3.23...).'
+      serversideup-ref:
+        type: string
+        required: true
+        default: 'v5.0.1'
+        description: 'Tag serversideup/docker-php dont on reconstruit le code.'
+      frankenphp-version:
+        type: string
+        required: false
+        default: ''
+        description: 'Version FrankenPHP à compiler (vide = celle du tag serversideup).'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php_version: ${{ fromJson(inputs.php-versions) }}
+    env:
+      PHP_VERSION: ${{ matrix.php_version }}
+      BASE_OS: ${{ inputs.base-os }}
+      SERVERSIDEUP_REF: ${{ inputs.serversideup-ref }}
+    steps:
+      - name: Vérifier que l'image PHP officielle existe
+        run: |
+          set -euo pipefail
+          tag="${PHP_VERSION}-zts-${BASE_OS}"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://hub.docker.com/v2/repositories/library/php/tags/${tag}/")
+          if [[ "$code" != "200" ]]; then
+            echo "::error::php:${tag} n'existe pas (encore) sur Docker Hub (HTTP ${code})."
+            exit 1
+          fi
+          echo "PHP_MINOR=${PHP_VERSION%.*}" >> "$GITHUB_ENV"
+          echo "BASE_TAG=ghcr.io/yieldstudio/php-base:${PHP_VERSION}-frankenphp-${BASE_OS}-serversideup-${SERVERSIDEUP_REF}" >> "$GITHUB_ENV"
+          echo "FINAL_TAG=ghcr.io/yieldstudio/php:${PHP_VERSION}-frankenphp-${BASE_OS}" >> "$GITHUB_ENV"
+
+      - name: Check out code.
+        uses: actions/checkout@v5
+
+      - name: Check out serversideup/docker-php
+        uses: actions/checkout@v5
+        with:
+          repository: serversideup/docker-php
+          ref: ${{ inputs.serversideup-ref }}
+          path: .serversideup
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build serversideup (frankenphp) depuis les sources
+        uses: docker/build-push-action@v6
+        with:
+          context: .serversideup
+          file: .serversideup/src/variations/frankenphp/Dockerfile
+          cache-from: type=gha,scope=serversideup-${{ matrix.php_version }}-${{ inputs.base-os }}
+          cache-to: type=gha,mode=max,scope=serversideup-${{ matrix.php_version }}-${{ inputs.base-os }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+            BASE_OS_VERSION=${{ inputs.base-os }}
+            REPOSITORY_BUILD_VERSION=${{ inputs.serversideup-ref }}-rebuild-${{ github.run_id }}
+            ${{ inputs.frankenphp-version != '' && format('FRANKENPHP_VERSION={0}', inputs.frankenphp-version) || '' }}
+          platforms: linux/amd64,linux/arm64
+          pull: true
+          push: true
+          tags: ${{ env.BASE_TAG }}
+
+      - name: Build yieldstudio/php (frankenphp)
+        uses: docker/build-push-action@v6
+        with:
+          file: src/variations/frankenphp/Dockerfile
+          cache-from: type=gha,scope=yieldstudio-${{ matrix.php_version }}-${{ inputs.base-os }}
+          cache-to: type=gha,scope=yieldstudio-${{ matrix.php_version }}-${{ inputs.base-os }}
+          build-args: |
+            BASE_IMAGE=${{ env.BASE_TAG }}
+            BASE_OS_VERSION=${{ inputs.base-os }}
+            PHP_VERSION=${{ env.PHP_MINOR }}
+            PHP_VARIATION=frankenphp
+            REPOSITORY_BUILD_VERSION=pinned-${{ matrix.php_version }}-${{ github.run_id }}
+          platforms: linux/amd64,linux/arm64
+          pull: true
+          push: true
+          tags: ${{ env.FINAL_TAG }}
+
+      - name: Vérifier la version PHP publiée
+        run: |
+          set -euo pipefail
+          for platform in linux/amd64 linux/arm64; do
+            got=$(docker run --rm --platform "$platform" --entrypoint php "$FINAL_TAG" -r 'echo PHP_VERSION;')
+            echo "$platform : PHP $got"
+            if [[ "$got" != "$PHP_VERSION" ]]; then
+              echo "::error::$FINAL_TAG ($platform) contient PHP $got au lieu de $PHP_VERSION"
+              exit 1
+            fi
+          done
