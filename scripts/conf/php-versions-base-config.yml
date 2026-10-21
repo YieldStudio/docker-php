@@ -9,57 +9,43 @@ php_variations:
       - "8.2"
 
 php_versions:
-  - major: "7"
-    minor_versions:
-      - minor: "7.4"
-        base_os:
-          - name: alpine3.16
-          - name: bullseye
-        patch_versions:
-          - 7.4.33
   - major: "8"
     minor_versions:
-      - minor: "8.0"
-        base_os:
-          - name: alpine3.16
-          - name: bullseye
-        patch_versions:
-          - 8.0.30
       - minor: "8.1"
         base_os:
-          - name: alpine3.21
+          - name: alpine3.22
           - name: bookworm
           - name: trixie
         patch_versions:
         # - 8.1.28 # Pull latest from Official PHP source
       - minor: "8.2"
         base_os:
-          - name: alpine3.21
-          - name: alpine3.22
+          - name: alpine3.23
+          - name: alpine3.24
           - name: bookworm
           - name: trixie
         patch_versions:
         #   - 8.2.18 # Pull latest from Official PHP source
       - minor: "8.3"
         base_os:
-          - name: alpine3.21
-          - name: alpine3.22
+          - name: alpine3.23
+          - name: alpine3.24
           - name: bookworm
           - name: trixie
         patch_versions:
           # - 8.3.6 # Pull latest from Official PHP source
       - minor: "8.4"
         base_os:
-          - name: alpine3.21
-          - name: alpine3.22
+          - name: alpine3.23
+          - name: alpine3.24
           - name: bookworm
           - name: trixie
         patch_versions:
         #   - 8.4.1 # Pull latest from Official PHP source
       - minor: "8.5"
         base_os:
-          - name: alpine3.21
-          - name: alpine3.22
+          - name: alpine3.23
+          - name: alpine3.24
           - name: bookworm
           - name: trixie
         patch_versions:
@@ -89,6 +75,12 @@ operating_systems:
       - name: "Alpine 3.22"
         version: alpine3.22
         number: 3.22
+      - name: "Alpine 3.23"
+        version: alpine3.23
+        number: 3.23
+      - name: "Alpine 3.24"
+        version: alpine3.24
+        number: 3.24
   - family: debian
     default: true
     versions:

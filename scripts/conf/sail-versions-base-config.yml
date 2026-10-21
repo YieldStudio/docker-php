@@ -48,6 +48,12 @@ operating_systems:
       - name: "Alpine 3.22"
         version: alpine3.22
         number: 3.22
+      - name: "Alpine 3.23"
+        version: alpine3.23
+        number: 3.23
+      - name: "Alpine 3.24"
+        version: alpine3.24
+        number: 3.24
   - family: debian
     default: true
     versions:
