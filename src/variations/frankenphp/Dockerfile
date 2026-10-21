@@ -4,7 +4,7 @@ ARG PHP_VERSION='8.5'
 ARG PHP_VARIATION='frankenphp'
 ARG BASE_REPO='serversideup/php'
 ARG TAG_PREFIX=''
-ARG IMAGE_VERSION='v4.2.1'
+ARG IMAGE_VERSION='v5.0.2'
 ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-${IMAGE_VERSION}"
 
 ########################
@@ -39,6 +39,9 @@ FROM common AS final
 
 ARG REPOSITORY_BUILD_VERSION='dev'
 
+# serversideup v5 passe a CADDY_LOG_FORMAT=auto / CADDY_LOG_OUTPUT=stderr.
+# Nos log-level/*.caddyfile font `format {$CADDY_LOG_FORMAT}` : "auto" n'est pas
+# un encodeur Caddy valide, on garde donc les valeurs v4.
 ENV \
     PHP_VARIABLES_ORDER="GPCS" \
     PHP_OPCACHE_PRELOAD="" \
@@ -51,7 +54,9 @@ ENV \
     PHP_OPCACHE_JIT_BUFFER_SIZE="64M" \
     FRANKENPHP_THREADS=8 \
     FRANKENPHP_MAX_THREADS=32 \
-    FRANKENPHP_WORKER_THREADS=4
+    FRANKENPHP_WORKER_THREADS=4 \
+    CADDY_LOG_FORMAT="console" \
+    CADDY_LOG_OUTPUT="stdout"
 
 LABEL org.opencontainers.image.title="yieldstudio/php (frankenphp)" \
     org.opencontainers.image.description="Supercharge your PHP experience. Based off the official PHP images and serversideup/php, yieldstudio/php includes pre-configured PHP extensions and settings for enhanced performance and security. Optimized for Laravel and WordPress." \
