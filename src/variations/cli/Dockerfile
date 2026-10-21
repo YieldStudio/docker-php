@@ -3,8 +3,8 @@ ARG PHP_VERSION='8.5'
 ARG PHP_VARIATION='cli'
 ARG BASE_REPO='serversideup/php'
 ARG TAG_PREFIX=''
-ARG IMAGE_VERSION='v5.0.1'
-ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}-${IMAGE_VERSION}"
+ARG SERVERSIDEUP_MAJOR='v5'
+ARG BASE_IMAGE="${BASE_REPO}:${TAG_PREFIX}${PHP_VERSION}-${PHP_VARIATION}-${BASE_OS_VERSION}"
 
 ##########
 # CLI: Main Image
@@ -31,6 +31,16 @@ ENV \
     PHP_VARIABLES_ORDER="GPCS"
 
 USER root
+
+# Tag serversideup sans version : il suit les correctifs PHP (les tags -vX.Y.Z sont figes
+# a leur date de release). Garde-fou : le build echoue si serversideup change de version
+# majeure, pour relire ses breaking changes avant de monter (cf. passage v4 -> v5).
+ARG SERVERSIDEUP_MAJOR
+RUN serversideup_version="$(cat /etc/serversideup-php-version)"; \
+    case "$serversideup_version" in \
+        "${SERVERSIDEUP_MAJOR}".*) ;; \
+        *) echo "serversideup/php ${serversideup_version} : version majeure attendue ${SERVERSIDEUP_MAJOR}, relire les breaking changes puis mettre a jour SERVERSIDEUP_MAJOR" >&2; exit 1 ;; \
+    esac
 
 # copy our scripts
 COPY --chmod=755 src/common/ /

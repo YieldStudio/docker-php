@@ -96,6 +96,8 @@ jobs:
     needs: setup-matrix
     runs-on: ubuntu-24.04
     strategy:
+      # Une combinaison en echec ne doit pas annuler les autres, mais doit rester visible.
+      fail-fast: false
       matrix: ${{fromJson(needs.setup-matrix.outputs.php-version-map-json)}}
 
     steps:
@@ -175,7 +177,6 @@ jobs:
 
       - name: Build images
         uses: docker/build-push-action@v6
-        continue-on-error: true
         with:
           file: src/variations/${{ matrix.php_variation }}/Dockerfile
           cache-from: type=gha
