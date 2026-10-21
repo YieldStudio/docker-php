@@ -1,13 +1,12 @@
 name: Docker Publish (Pinned PHP Images)
 
-# Publie ghcr.io/yieldstudio/php:<patch>-frankenphp-<os> (ex. 8.4.27-frankenphp-trixie),
-# un tag de version PHP complete que les apps fixent via PHP_BASE_VERSION.
+# Publie ghcr.io/yieldstudio/php:<patch>-frankenphp-<os> (ex. 8.4.27-frankenphp-trixie)
+# sans attendre une release serversideup : l'image serversideup est reconstruite depuis son
+# code source (ref fixée) sur l'image PHP officielle de la version demandée, puis notre
+# variation frankenphp est construite par-dessus.
 #
-# Par defaut, la base est l'image officielle serversideup/php:<patch>-frankenphp-<os>-<ref>.
-# En secours (rebuild-serversideup), l'image serversideup est reconstruite depuis son code
-# source (ref fixee) sur l'image PHP officielle php:<patch>-zts-<os>, sans attendre leur release.
-#
-# Les tags 8.4-... restent geres par "Docker Publish (Production Images)".
+# Seuls des tags de version complète sont publiés : les tags 8.4-… restent gérés par
+# "Docker Publish (Production Images)". Les apps choisissent la version via PHP_BASE_VERSION.
 
 on:
   workflow_dispatch:
@@ -16,7 +15,7 @@ on:
         type: string
         required: true
         default: '["8.4.27", "8.3.36"]'
-        description: 'Versions PHP completes (liste JSON).'
+        description: 'Versions PHP complètes (liste JSON). Elles doivent exister sur Docker Hub en php:<version>-zts-<os>.'
       base-os:
         type: string
         required: true
@@ -25,17 +24,13 @@ on:
       serversideup-ref:
         type: string
         required: true
-        default: 'v5.0.2'
-        description: 'Release serversideup/php (ex. v5.0.2).'
-      rebuild-serversideup:
-        type: boolean
-        default: false
-        description: 'Secours : reconstruire serversideup depuis ses sources au lieu de prendre leur image.'
+        default: 'v5.0.1'
+        description: 'Tag serversideup/docker-php dont on reconstruit le code.'
       frankenphp-version:
         type: string
         required: false
         default: ''
-        description: 'Avec rebuild uniquement : version FrankenPHP a compiler (vide = celle de la ref).'
+        description: 'Version FrankenPHP à compiler (vide = celle du tag serversideup).'
 
 permissions:
   contents: read
@@ -52,31 +47,24 @@ jobs:
       PHP_VERSION: ${{ matrix.php_version }}
       BASE_OS: ${{ inputs.base-os }}
       SERVERSIDEUP_REF: ${{ inputs.serversideup-ref }}
-      REBUILD: ${{ inputs.rebuild-serversideup }}
     steps:
-      - name: Verifier que l'image de base existe
+      - name: Vérifier que l'image PHP officielle existe
         run: |
           set -euo pipefail
-          if [[ "$REBUILD" == "true" ]]; then
-            repo=library/php; tag="${PHP_VERSION}-zts-${BASE_OS}"
-            echo "BASE_TAG=ghcr.io/yieldstudio/php-base:${PHP_VERSION}-frankenphp-${BASE_OS}-serversideup-${SERVERSIDEUP_REF}" >> "$GITHUB_ENV"
-          else
-            repo=serversideup/php; tag="${PHP_VERSION}-frankenphp-${BASE_OS}-${SERVERSIDEUP_REF}"
-            echo "BASE_TAG=serversideup/php:${tag}" >> "$GITHUB_ENV"
-          fi
-          code=$(curl -s -o /dev/null -w '%{http_code}' "https://hub.docker.com/v2/repositories/${repo}/tags/${tag}/")
+          tag="${PHP_VERSION}-zts-${BASE_OS}"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://hub.docker.com/v2/repositories/library/php/tags/${tag}/")
           if [[ "$code" != "200" ]]; then
-            echo "::error::${repo}:${tag} n'existe pas (encore) sur Docker Hub (HTTP ${code})."
+            echo "::error::php:${tag} n'existe pas (encore) sur Docker Hub (HTTP ${code})."
             exit 1
           fi
           echo "PHP_MINOR=${PHP_VERSION%.*}" >> "$GITHUB_ENV"
+          echo "BASE_TAG=ghcr.io/yieldstudio/php-base:${PHP_VERSION}-frankenphp-${BASE_OS}-serversideup-${SERVERSIDEUP_REF}" >> "$GITHUB_ENV"
           echo "FINAL_TAG=ghcr.io/yieldstudio/php:${PHP_VERSION}-frankenphp-${BASE_OS}" >> "$GITHUB_ENV"
 
       - name: Check out code.
         uses: actions/checkout@v5
 
       - name: Check out serversideup/docker-php
-        if: ${{ inputs.rebuild-serversideup }}
         uses: actions/checkout@v5
         with:
           repository: serversideup/docker-php
@@ -99,7 +87,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build serversideup (frankenphp) depuis les sources
-        if: ${{ inputs.rebuild-serversideup }}
         uses: docker/build-push-action@v6
         with:
           context: .serversideup
